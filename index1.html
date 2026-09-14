@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'" />
+
+    <title>Next Engine</title>
+
+    <link rel="stylesheet" href="dist/bundle.css" />
+    <link rel="stylesheet" href="ext/icons/iconfont.css" />
+  </head>
+
+  <body>
+    <div class="window-drag-area"></div>
+
+    <div class="windows-caption-buttons">
+      <div class="element caption-minimise">
+        <svg>
+          <line x1="1" y1="5.5" x2="11" y2="5.5" />
+        </svg>
+      </div>
+      <div class="element caption-maximize">
+        <svg>
+          <rect x="1.5" y="1.5" width="9" height="9" />
+        </svg>
+      </div>
+      <div class="element caption-restore">
+        <svg>
+          <rect x="1.5" y="3.5" width="7" height="7" />
+          <polyline points="3.5,3.5 3.5,1.5 10.5,1.5 10.5,8.5 8.5,8.5" />
+        </svg>
+      </div>
+      <div class="element caption-close">
+        <svg>
+          <path d="M1,1 l 10,10 M1,11 l 10,-10" />
+        </svg>
+      </div>
+    </div>
+
+    <button id="linux-control-buttons" class="theme-text-color">
+      <svg
+        width="74"
+        height="24"
+        version="1.1"
+        fill="none"
+        stroke="none"
+        stroke-linecap="square"
+        stroke-miterlimit="10"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g id="minimize-button">
+          <rect width="24" height="24" fill="transparent"></rect>
+          <path
+            class="button-background"
+            d="m0.5826226 9.868774l0 0c0 -5.24453 4.251532 -9.496062 9.496063 -9.496062l0 0c2.5185127 0 4.933873 1.0004752 6.714731 2.7813323c1.7808571 1.7808576 2.781332 4.196218 2.781332 6.7147303l0 0c0 5.2445316 -4.2515326 9.496063 -9.496063 9.496063l0 0c-5.244531 0 -9.496063 -4.2515316 -9.496063 -9.496063z"
+            fill-rule="evenodd"
+          />
+          <path
+            stroke="currentColor"
+            stroke-width="2.0"
+            stroke-linejoin="round"
+            stroke-linecap="butt"
+            d="m6.7086616 12.519685l6.7401576 -0.031496048"
+            fill-rule="evenodd"
+          />
+        </g>
+        <g id="maximize-button">
+          <rect width="24" height="24" x="24" fill="transparent"></rect>
+          <path
+            class="button-background"
+            d="m27.85034 9.868774l0 0c0 -5.24453 4.2515316 -9.496062 9.496061 -9.496062l0 0c2.5185127 0 4.933876 1.0004752 6.714733 2.7813323c1.7808571 1.7808576 2.78133 4.196218 2.78133 6.7147303l0 0c0 5.2445316 -4.2515297 9.496063 -9.496063 9.496063l0 0c-5.2445297 0 -9.496061 -4.2515316 -9.496061 -9.496063z"
+            fill-rule="evenodd"
+          />
+          <path
+            stroke="currentColor"
+            stroke-width="2.0"
+            stroke-linejoin="round"
+            stroke-linecap="butt"
+            d="m34.16273 6.717848l6.3622017 0l0 6.2992125l-6.3622017 0z"
+            fill-rule="evenodd"
+          />
+        </g>
+        <g id="close-button">
+          <rect width="24" height="24" x="48" fill="transparent"></rect>
+          <path
+            class="button-background"
+            d="m55.118057 9.496072l0 0c0 -5.244531 4.2515297 -9.496063 9.496063 -9.496063l0 0c2.518509 0 4.9338684 1.0004753 6.7147293 2.7813325c1.7808533 1.7808573 2.781334 4.1962185 2.781334 6.714731l0 0c0 5.2445307 -4.2515335 9.496062 -9.496063 9.496062l0 0c-5.2445335 0 -9.496063 -4.2515316 -9.496063 -9.496062z"
+            fill-rule="evenodd"
+          />
+          <path
+            stroke="currentColor"
+            stroke-width="2.0"
+            stroke-linejoin="round"
+            stroke-linecap="butt"
+            d="m61.26077 6.1103663l6.740162 6.7716537"
+            fill-rule="evenodd"
+          />
+          <path
+            stroke="currentColor"
+            stroke-width="2.0"
+            stroke-linejoin="round"
+            stroke-linecap="butt"
+            d="m68.01668 6.1261144l-6.771656 6.7401576"
+            fill-rule="evenodd"
+          />
+        </g>
+      </svg>
+    </button>
+
+    <div
+      id="navbar"
+      class="theme-background-color theme-text-color windowDragHandle"
+      tabindex="-1"
+    >
+    <div id="mac-window-drag-area"></div>
+      <button
+        id="menu-button"
+        class="navbar-action-button i carbon:overflow-menu-vertical"
+        data-label="openMenu"
+        tabindex="-1"
+      ></button>
+      <div id="toolbar-navigation-buttons" hidden>
+          <button
+          id="back-button"
+          class="navbar-action-button i carbon:chevron-left"
+          data-label="goBack"
+          tabindex="-1"
+        ></button>
+        <button
+        id="forward-button"
+        class="navbar-action-button i carbon:chevron-right"
+        data-label="goForward"
+        tabindex="-1"
+      ></button>
+      </div>
+      <div id="tabs">
+        <div id="tab-editor" hidden>
+          <input id="tab-editor-input" class="mousetrap" spellcheck="false" />
+        </div>
+        <div id="tabs-inner" role="tablist" class="has-thin-scrollbar"></div>
+      </div>
+      <div class="navbar-right-actions">
+        <button
+          id="add-tab-button"
+          class="navbar-action-button i carbon:add"
+          data-label="newTabAction"
+          tabindex="-1"
+        ></button>
+      </div>
+    </div>
+
+    <button
+      id="switch-task-button"
+      class="navbar-action-button theme-text-color windowDragHandle i"
+      data-label="viewTasks"
+      tabindex="-1"
+    >
+      <svg
+        version="1.1"
+        viewBox="0.0 0.0 26.0 26.0"
+        fill="none"
+        stroke="none"
+        stroke-linecap="square"
+        stroke-miterlimit="10"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#p.0)">
+          <path
+            fill="currentColor"
+            d="m0 0l32 0l0 4l-32 0z"
+            fill-rule="evenodd"
+          />
+          <path
+            fill="currentColor"
+            d="m0 11l32 0l0 4l-32 0z"
+            fill-rule="evenodd"
+          />
+          <path
+            fill="currentColor"
+            d="m0 22l32 0l0 4l-32 0z"
+            fill-rule="evenodd"
+          />
+        </g>
+      </svg>
+    </button>
+
+    <div id="searchbar" class="theme-background-color theme-text-color">
+      <div class="top-answer-area"></div>
+    </div>
+
+    <div id="overlay"></div>
+
+    <div id="webviews">
+      <div id="leftArrowContainer" class="arrow-indicator">
+        <i id="leftArrow" class="i carbon:chevron-left"></i>
+      </div>
+      <div id="rightArrowContainer" class="arrow-indicator">
+        <i id="rightArrow" class="i carbon:chevron-right"></i>
+      </div>
+      <img id="webview-placeholder" hidden aria-hidden="true" />
+
+     <!-- design inspired by https://www.authkit.com/ -->
+<div class="header">
+  <h2><a href="#" target="_blank" rel="noopener noreferrer">Next Engine</a></h2>
+  <div class="mid-spot" onclick="document.body.classList.toggle('gold');"></div>
+  <button class="contact-btn">
+    <span class="glow"></span>
+    <span class="contact-btn-content">Contact Us</span>
+  </button>
+
+  <div class="spotlight">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="accent-lines">
+  <div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+	
+</div>
+<div class="heroSubP">
+	
+  <p>Introducing</p>
+	
+</div>
+
+  <div class="searchbox">
+		<button class="btn-menu">
+				<img src="https://img.icons8.com/cute-clipart/24/000000/top-menu.png">
+		</button>
+		<input id="search" type="text" placeholder="Search Here..." name="search" class="search">
+	<button  class="btn-search">
+			<img src="https://img.icons8.com/cotton/24/000000/search--v2.png">
+		</button>
+</div>
+</div>
+			</div>
+		</div>
+		
+</div>
+<style>
+	
+@import url('https://fonts.googleapis.com/css?family=Lexend+Deca|Dosis&display=swap');
+
+
+
+button {
+	& img {
+		transition: transform .25s;
+	}
+	&:hover{
+		& > img {
+			  transform:scale(1.2);
+		}
+	}
+	&:focus {
+		outline: none;
+	}
+}
+
+input {
+	 
+	font-family: 'Lexend Deca', sans-serif;;
+	&::placeholder{
+		font-family: 'Lexend Deca', sans-serif;
+	}
+	&:focus{
+		outline: none;
+	}
+}
+
+.searchbox{
+		height: 90px;
+		width: 600px;
+    max-width: 100%;
+    background: white;
+    border-radius: 10px;
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 70px;
+		display: flex;
+	  background: transparent;
+	
+	& > .btn-menu {
+		padding: 16px;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+	}
+	
+	& > .search{
+		background: transparent;
+		border-style: solid gray;
+    border-width: 3px;
+		width: 100%;
+		color:white;
+		
+		
+	}
+	
+	& > .btn-search {
+		padding: 16px;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+	}
+}
+
+</style>
+
+
+<div class="hero">
+  <div class="heroT">
+    <h2>Next Engine</h2>
+    <h2>Next Engine</h2>
+  </div>
+  <div class="card">
+  <ul>
+    <li class="iso-pro">
+      <span></span>
+      <span></span>
+      <span></span>
+      <a href="https://www.instagram.com/mr_roushan_agarwal_/">
+        <svg
+          viewBox="0 0 320 512"
+          xmlns="http://www.w3.org/2000/svg"
+          class="svg"
+        >
+          <path
+            d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
+          ></path></svg
+      ></a>
+      <div class="text">Facebook</div>
+    </li>
+    <li class="iso-pro">
+      <span></span>
+      <span></span>
+      <span></span>
+      <a href="https://www.instagram.com/mr_roushan_agarwal_/">
+        <svg
+          class="svg"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+        >
+          <path
+            d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"
+          ></path>
+        </svg>
+      </a>
+      <div class="text">Twitter</div>
+    </li>
+    <li class="iso-pro">
+      <span></span>
+      <span></span>
+      <span></span>
+      <a href="https://www.instagram.com/mr_roushan_agarwal_/">
+        <svg
+          class="svg"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 448 512"
+        >
+          <path
+            d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
+          ></path>
+        </svg>
+      </a>
+      <div class="text">Instagram</div>
+    </li>
+  </ul>
+</div>
+<style>.card {
+  max-width: fit-content;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  gap: 1rem;
+  backdrop-filter: blur(15px);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.192),
+    inset 0 0 5px rgba(255, 255, 255, 0.274), 0 5px 5px rgba(0, 0, 0, 0.164);
+  transition: 0.5s;
+}
+
+.card:hover {
+  animation: ease-out 5s;
+  background: rgba(173, 173, 173, 0.05);
+}
+
+.card ul {
+  padding: 1rem;
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.card ul li {
+  cursor: pointer;
+}
+
+.svg {
+  transition: all 0.3s;
+  /* if you find some problems change w - h : 30px*/
+  padding: 1rem;
+  height: 60px;
+  width: 60px;
+  border-radius: 100%;
+  color: rgb(255, 174, 0);
+  fill: currentColor;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3),
+    inset 0 0 5px rgba(255, 255, 255, 0.5), 0 5px 5px rgba(0, 0, 0, 0.164);
+}
+
+.text {
+  opacity: 0;
+  border-radius: 5px;
+  padding: 5px;
+  transition: all 0.3s;
+  color: rgb(255, 174, 0);
+  background-color: rgba(255, 255, 255, 0.3);
+  position: absolute;
+  z-index: 9999;
+  box-shadow: -5px 0 1px rgba(153, 153, 153, 0.2),
+    -10px 0 1px rgba(153, 153, 153, 0.2),
+    inset 0 0 20px rgba(255, 255, 255, 0.3),
+    inset 0 0 5px rgba(255, 255, 255, 0.5), 0 5px 5px rgba(0, 0, 0, 0.082);
+}
+
+/*isometric prooyection*/
+.iso-pro {
+  transition: 0.5s;
+}
+.iso-pro:hover a > .svg {
+  transform: translate(15px, -15px);
+  border-radius: 100%;
+}
+
+.iso-pro:hover .text {
+  opacity: 1;
+  transform: translate(25px, -2px) skew(-5deg);
+}
+
+.iso-pro:hover .svg {
+  transform: translate(5px, -5px);
+}
+
+.iso-pro span {
+  opacity: 0;
+  position: absolute;
+  color: #1877f2;
+  border-color: #1877f2;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3),
+    inset 0 0 5px rgba(255, 255, 255, 0.5), 0 5px 5px rgba(0, 0, 0, 0.164);
+  border-radius: 50%;
+  transition: all 0.3s;
+  height: 60px;
+  width: 60px;
+}
+
+.iso-pro:hover span {
+  opacity: 1;
+}
+
+.iso-pro:hover span:nth-child(1) {
+  opacity: 0.2;
+}
+
+.iso-pro:hover span:nth-child(2) {
+  opacity: 0.4;
+  transform: translate(5px, -5px);
+}
+
+.iso-pro:hover span:nth-child(3) {
+  opacity: 0.6;
+  transform: translate(10px, -10px);
+}
+  
+@import url('https://fonts.cdnfonts.com/css/hubot-sans');
+*{ box-sizing: border-box; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth;}
+html, body { height: 100%; }
+
+body {
+    margin: 0;
+    font-family: Untitled Sans, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;
+    background: #05060f linear-gradient(0deg,rgba(216,236,248,.06),rgba(152,192,239,.06));
+
+    font-size: max(calc(var(--_size) * 0.03), 10px);
+    --_factor: min(600px, 80vh);
+    --_size: min(var(--_factor), 80vw);
+}
+
+body.gold .header h2 ,
+body.gold p,
+body.gold > * > * :not(.contact-btn) {
+    filter: invert(1) brightness(4.7);
+}
+body.gold .header h2 a{
+    filter: hue-rotate(0deg);
+}
+body.gold canvas {
+    filter: drop-shadow(2em 4em 0px #d8bd10) drop-shadow(-8em -14em 0px #d8bd10);
+}
+body.gold .header .spotlight {
+    filter: invert(1) brightness(4.7) opacity(0.5);
+}
+body.gold .mountains > div {
+    box-shadow: 
+    -1em -0.2em 0.4em -1.1em #c2ccff,
+    inset 0em 0em 0em 2px #d8a910,
+    inset 0.2em 0.3em 0.2em -0.2em #c2ccff,
+    inset 10.2em 10.3em 2em -10em #d4e6ff2f;
+}
+
+body.gold .content-section,
+body.gold .content-section ::before,
+body.gold .content-section ::after{
+    filter: invert(1) brightness(4.4) opacity(1);
+}
+
+h2 {
+    font-family: 'Hubot-Sans', sans-serif;
+}
+h2, p {
+    margin: 0; padding: 0;
+}
+h2 a {
+    text-decoration: none;
+    color: unset;
+}
+
+.header {
+    display: flex; width: 100%;
+    justify-content: center;
+    color: #bad6f7;
+    padding: 2em;
+    position: absolute;
+    top: 0; left: 0; right: 0; margin: 0 auto;
+
+    opacity: 0;
+    translate: 0 -1em;
+    animation: load 2s ease-in 2s forwards, up 1.4s ease-out 2s forwards;
+}
+.header > :nth-child(1) {
+    font-size: 1em;
+    position: absolute; left: 0; right: 29em; margin: 0.2em auto;
+    width: fit-content;
+}
+.header > :nth-child(2) {
+    position: absolute; left: 0; right: 0; margin: 0 auto;
+    width: fit-content;
+}
+.header > h2{
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.04s ease-in-out;
+}
+.header > h2:hover {
+    opacity: 1;
+    text-shadow: 0 2px 16px rgba(174,207,242, 0.6);
+    width: fit-content;
+}
+
+.header > div.mid-spot {
+    width: 1.8em; height: 1.8em;
+    border-radius: 50%;
+    background: black;
+    box-shadow: 0 0 1em 0 #98c0ef;
+    cursor: pointer;
+    transition: box-shadow 1s ease-in-out;
+}
+.header > div.mid-spot:hover {
+    box-shadow: -0.3em 0.1em 0.2em 0 #d8bd10;
+}
+body.gold .header > div.mid-spot:hover {
+    box-shadow: -0.3em 0.1em 0.2em 0 #98c0ef;
+}
+
+body.gold .header > div.mid-spot {
+    box-shadow: 0 0 1em 0 #d8bd10;
+}
+
+.header > :nth-child(2):hover ~ .spotlight {
+    animation: colorize 10s linear infinite;
+}
+@keyframes colorize {
+    0%{filter: hue-rotate(0deg); }
+    100% {filter: hue-rotate(-380deg);}
+}
+
+button.contact-btn {
+    position: absolute; left: min(46em, 60vw); right: 0; margin: 0 auto;
+    width: 8em; height: 2.4em;
+    cursor: pointer;
+    border-radius: 20em;
+    border: none;
+    transition: background 0.5s, transform 0.5s;
+    
+    border: 1px solid #c2ccff33;
+    opacity: 1;
+    padding-top: 0.3em;
+
+    background: #121521;
+    color: #9dc3f7;
+    white-space:nowrap;
+}
+button.contact-btn::before {
+    content: ''; display: block; position:absolute; left: 0; top:0; border-radius: 20em;
+    width: 100%; height: 100%;
+    background: #c2ccff91 radial-gradient(farthest-side at 50% 100%, #c2ccff, transparent);
+    opacity: 0.1;
+    transition: all 0.4s ease-in-out;
+}
+button.contact-btn:hover::before {
+    background: #c2ccff1e radial-gradient(farthest-side at 50% 100%, #c2ccff, transparent);
+    opacity: 0.3;
+}
+.contact-btn .glow {
+    --border-width: 1px;
+    --loop-cycle: 24s;
+    position: absolute;
+    inset: calc(var(--border-width)* -1);
+    border-radius: 50px;
+    border: var(--border-width) solid transparent;
+    -webkit-mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+    mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+    -webkit-mask-clip: padding-box, border-box;
+    mask-clip: padding-box, border-box;
+    -webkit-mask-composite: source-in, xor;
+    mask-composite: intersect;
+    pointer-events: none;
+}
+button.contact-btn:hover .glow {
+    --loop-cycle: 2s;
+}
+.contact-btn .glow::after, .contact-btn .glow::before {
+    content: "";
+    height: 100%;
+    offset-anchor: 100% 50%;
+    background: radial-gradient(circle at 50% 50%, hsla(0, 0%, 100%, 0.75), transparent 50%), radial-gradient(circle at 50% 50%, #c2ccff 50%, transparent);
+    opacity: 0.4;
+    offset-path: rect(0 100% 100% 0 round 33px);
+    position: absolute;
+    display: inline-block;
+    -webkit-animation: loop 4s linear infinite;
+    animation: loop var(--loop-cycle) linear infinite;
+    aspect-ratio: 1 / 1;
+    transition: opacity 1s ease-in-out;
+}
+.contact-btn .glow::before {
+    animation-delay: calc( var(--loop-cycle) / -2 );
+}
+@keyframes loop {
+    100% {
+        offset-distance: 100%;
+    }    
+}
+.contact-btn-content {
+    background: linear-gradient(0deg, #d8ecf8, #98c0ef);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.2em;
+    line-height: 142%;
+}
+button.contact-btn:hover .glow::after, button.contact-btn:hover .glow::before {
+    opacity: 0.6;
+}
+@keyframes btn-rot {
+    0% { rotate: 0deg; }
+    100% { rotate: 360deg; } 
+}
+
+.header .spotlight {
+    pointer-events: none;
+    position: absolute; left: 0; right: 0; top:0; margin: 0 auto;
+    transition: filter 1s ease-in-out;
+
+    height: 42em; width: 100%;
+    overflow: hidden;
+}
+.header .spotlight > div {
+    border-radius: 0 0 50% 50%;
+    position: absolute; left: 0; right: 0; margin: 0 auto; 
+    top: 3em;
+    width: 30em; height: max(42em, 86vh);
+    background-image: conic-gradient(from 0deg at 50% -5%, transparent 45%, rgba(124, 145, 182, .3) 49%, rgba(124, 145, 182, .5) 50%, rgba(124, 145, 182, .3) 51%, transparent 55%);
+    transform-origin: 50% 0;
+    filter: blur(15px) opacity(0.5);
+    z-index: -1;
+    animation: load 2s ease-in-out forwards, loadrot 2s ease-in-out forwards, spotlight 21s ease-in-out infinite reverse;
+}
+.header .spotlight > div:nth-child(1){ 
+    rotate: 20deg;
+    animation: load 2s ease-in-out forwards, loadrot 2s ease-in-out forwards, spotlight 17s ease-in-out infinite;
+}
+.header .spotlight > div:nth-child(2){ 
+    rotate: -20deg;
+    animation: load 2s ease-in-out forwards, loadrot 2s ease-in-out forwards, spotlight 14s ease-in-out infinite;
+}
+@keyframes loadrot {
+    0% { rotate: 0deg; scale: 0;}
+    100% { scale: 1;}
+}
+@keyframes spotlight {
+    0% {
+        transform: rotateZ(0deg) scale(1);
+        filter: blur(15px) opacity(0.5);
+    }
+    20% {
+        transform: rotateZ(-1deg) scale(1.2);
+        filter: blur(16px) opacity(0.6);
+    }    
+    40% {
+        transform: rotateZ(2deg) scale(1.3);
+        filter: blur(14px) opacity(0.4);
+    }    
+    60% {
+        transform: rotateZ(-2deg) scale(1.2);
+        filter: blur(15px) opacity(0.6);
+    }    
+    80% {
+        transform: rotateZ(1deg) scale(1.1);
+        filter: blur(13px) opacity(0.4);
+    }    
+    100% {
+        transform: rotateZ(0deg) scale(1);
+        filter: blur(15px) opacity(0.5);
+    }    
+}
+
+canvas#particleCanvas {
+    position: absolute; pointer-events: none;
+    animation: load 0.4s ease-in-out forwards;
+    z-index: 1;
+    width: 100%;
+}
+
+p {
+    font-size: 1.5em;
+}
+
+.hero {
+    width: 100%;
+    height: 100%;
+    max-height: 140px;
+    position: absolute; top: 16em;
+}
+
+.heroT {
+    position: absolute; left: 0; right: 0; margin: auto;
+    height: 20em;
+    padding-top: 2em;
+    translate: 0 -1.6em;
+    opacity: 0;
+    animation: load 2s ease-in-out 0.6s forwards;
+}
+@keyframes load {  
+    0% { opacity: 0;}    
+    100% { opacity: 1;}    
+}
+.heroT > h2 {
+    position: absolute;left: 0; right: 0; margin: auto;
+    width: fit-content;
+    
+    font-size: 7em;
+    font-weight: 600;
+    color: #9dc3f7;
+    background:
+    radial-gradient( 2em 2em at 50% 50%,
+        transparent calc(var(--p) - 2em),
+        #fff calc(var(--p) - 1em), 
+        #fff calc(var(--p) - 0.4em), 
+        transparent var(--p) 
+    ),
+    linear-gradient(0deg, #bad1f1 30%, #9dc3f7 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 16px rgba(174,207,242,.24);
+
+    --p:0%;
+    transition:--p 3s linear;
+    
+    animation: pulse 10s linear 1.2s infinite;
+}
+
+.heroT h2:nth-child(2) {
+    background:
+    radial-gradient( 2em 2em at 50% 50%,
+        transparent calc(var(--p) - 2em),
+        transparent calc(var(--p) - 1em),
+        #fff calc(var(--p) - 1em), 
+        #fff calc(var(--p) - 0.4em), 
+        transparent calc(var(--p) - 0.4em), 
+        transparent var(--p) 
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: blur(16px) opacity(0.4);
+}
+@keyframes pulse { 
+    0% { --p:0%; }
+    50% { --p:300%;}
+    100% { --p:300%;}
+}
+@property --p {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+}
+
+.heroP {
+    font-size: 1.2em;
+    position: absolute; left: 0; right: 0; top: 20.6em; margin: auto;
+    height: fit-content; width: fit-content; text-align: center;
+    opacity: 0;
+    translate: 0 1em;
+    animation: load 2s ease-out 2s forwards, up 1.4s ease-out 2s forwards;
+    color: #d8ecf8;
+    text-shadow: 0 2px 16px rgba(174,207,242,.24);
+    background: linear-gradient(0deg, #d8ecf8 0, #98c0ef 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+@keyframes up {      
+    100% { translate: 0; }    
+}
+
+.heroSubP {
+    position: absolute; left: 0; right: 0; top: 13em; margin: auto;
+    height: fit-content;
+    opacity: 0;
+    translate: 0 -1em;
+    animation: load3 2s ease-in 0s forwards, up 1.4s ease-out 0s forwards;
+}
+@keyframes load3 {  
+    0% { opacity: 0;}    
+    100% { opacity: 0.7;}    
+}
+.heroSubP p {
+    font-size: 1em;
+    position: relative; width: fit-content; margin: auto;
+    color: #d8ecf8;
+    text-shadow: 0 2px 16px rgba(174,207,242,.24);
+    background: linear-gradient(0deg, #d8ecf8 0, #98c0ef 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.heroSubP p::before,
+.heroSubP p::after {
+    position: absolute; top: 60%; 
+    display: block; content: '';
+    width: 5em; height: 1px;
+    opacity: 0;
+    animation: load2 1.4s ease-in-out 0s forwards, up 1.4s ease-out 0s forwards;
+}
+@keyframes load2 {  
+    0% { opacity: 0;}    
+    100% { opacity: 0.3;}    
+}
+.heroSubP p::before{
+    background: linear-gradient( -90deg, #9dc3f7 0%, transparent 100%);
+    right: 120%;
+    translate: -5em 0;
+}
+.heroSubP p::after {
+    background: linear-gradient( 90deg, #9dc3f7 0%, transparent 100%);
+    left: 120%;
+    translate: 5em 0;
+}
+
+.accent-lines {
+    pointer-events: none;
+    position: absolute; top: 0; left: 0; right: 0;
+    width: 100%; height: 42em;
+    z-index: -2;
+    --accent-lines-clr: rgba(186, 215, 247, .18);
+}
+.accent-lines > div {
+    position: absolute; top: 0; right: 0; left: 0; margin: auto;
+    height: 100%; width: 100%;
+}
+.accent-lines > div:nth-child(1) > div{
+    position: absolute; top: 0; right: 0; left: 0; margin: auto;
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-lines-clr), transparent);
+    opacity: 0; scale: 0;
+    animation: accentload 2s ease-out 2.4s forwards;
+}
+.accent-lines > div:nth-child(1) > div:nth-child(1){ top: 6em; }
+.accent-lines > div:nth-child(1) > div:nth-child(2){ top: 11em; }
+.accent-lines > div:nth-child(1) > div:nth-child(3){ top: 16em; }
+.accent-lines > div:nth-child(1) > div:nth-child(4){ top: 24em; }
+.accent-lines > div:nth-child(1) > div:nth-child(5){ top: 29em; }
+.accent-lines > div:nth-child(2) > div{
+    position: absolute; top: 0; right: 0; left: 0; margin: auto;
+    width: 1px; height: 100%;
+    background: var(--accent-lines-clr);
+}
+@keyframes accentload {
+    0% {
+        opacity: 0; scale: 0;
+    }
+    100% {
+        opacity: 1; scale: 1;
+    }
+}
+
+.accent-lines > div:nth-child(2) > div {
+    opacity: 0; scale: 0;
+    animation: accentload 2s ease-out 2s forwards;
+}
+.accent-lines > div:nth-child(2) > div:nth-child(1){ left: 24em; }
+.accent-lines > div:nth-child(2) > div:nth-child(2){ left: 34em; }
+.accent-lines > div:nth-child(2) > div:nth-child(3){ right: 24em; }
+.accent-lines > div:nth-child(2) > div:nth-child(4){ right: 34em; }
+
+.accent-lines > div:nth-child(1) > div::before, 
+.accent-lines > div:nth-child(1) > div::after { 
+    content: ''; display: none; position: absolute;
+    width: 0.2em; height: 0.2em; border-radius: 1em;
+    background: #9dc3f7;
+    left: 0; right: 0; margin: auto;
+    translate: 0 -1px;
+
+    opacity: 0; scale: 0;
+    animation: accentload 2s ease-out 4.4s forwards;
+}
+
+.accent-lines > div:nth-child(1) > div:nth-child(3)::before{ display: block; left: 24em; }
+.accent-lines > div:nth-child(1) > div:nth-child(3)::after{ display: block; right: 24em; }
+.accent-lines > div:nth-child(1) > div:nth-child(4)::before{ display: block; left: 24em; }
+.accent-lines > div:nth-child(1) > div:nth-child(4)::after{ display: block; right: 24em; }
+.accent-lines > div:nth-child(1) > div:nth-child(5)::before{ display: block; left: 24em; }
+.accent-lines > div:nth-child(1) > div:nth-child(5)::after{ display: block; right: 24em; }
+
+.accent-lines > div:nth-child(1) > div:nth-child(2)::before,
+.accent-lines > div:nth-child(1) > div:nth-child(2)::after{ 
+    display: block; width: 5em; height: 1px; border-radius: 0; opacity: 0.12;
+}
+.accent-lines > div:nth-child(1) > div:nth-child(2)::before{
+    right: 24em; rotate: 45deg; translate: -2.5em 2.5em;
+}
+.accent-lines > div:nth-child(1) > div:nth-child(2)::after{
+    right: 24em; rotate: -45deg; translate: -2.5em 2.5em;
+}
+.accent-lines > div:nth-child(1) > div:nth-child(1)::before,
+.accent-lines > div:nth-child(1) > div:nth-child(1)::after{ 
+    display: block; width: 5em; height: 1px; border-radius: 0; opacity: 0.12;
+}
+.accent-lines > div:nth-child(1) > div:nth-child(1)::before{
+    left: 24em; rotate: 45deg; translate: 2.5em 7.5em;
+}
+.accent-lines > div:nth-child(1) > div:nth-child(1)::after{
+    left: 24em; rotate: -45deg; translate: 2.5em 7.5em;
+}
+
+.accent-lines > div:nth-child(1) > div:nth-child(2)::before,
+.accent-lines > div:nth-child(1) > div:nth-child(2)::after {
+    opacity: 0; scale: 0;
+    animation: accentload2 2s ease-out 2.4s forwards;
+}
+.accent-lines > div:nth-child(1) > div:nth-child(1)::before,
+.accent-lines > div:nth-child(1) > div:nth-child(1)::after {
+    opacity: 0; scale: 0;
+    animation: accentload3 2s ease-out 2.4s forwards;
+} 
+@keyframes accentload2 {
+    0% {
+        opacity: 0; scale: 0; transform: rotate(360deg);
+    }
+    50% { scale: 0; }
+    100% {
+        opacity: 0.12; scale: 1; transform: rotate(0deg);
+    }
+}
+@keyframes accentload3 {
+    0% {
+        opacity: 0; scale: 0; transform: rotate(-360deg);
+    }
+    50% { scale: 0; }
+    100% {
+        opacity: 0.12; scale: 1; transform: rotate(0deg);
+    }
+}
+
+.mountains {
+    position: absolute; left: 0; right: 0; top: 31em; margin: auto;
+    width: 100%; height: 10em;
+    pointer-events: none;
+}
+.mountains::before {
+    content: ''; display: block;
+    width: 100%; height: 500%;
+    position: absolute; top: 0%;
+    background: linear-gradient(90deg, #121521 0%, transparent 50%);
+    background: linear-gradient(0deg, #121521 80%, transparent 90%);
+    z-index: 2;
+}
+.mountains > div {
+    box-shadow: 
+    -1em -0.2em 0.4em -1.1em #c2ccff,
+    inset 0em 0em 0em 2px #c2ccff,
+    inset 0.2em 0.3em 0.2em -0.2em #c2ccff,
+    inset 10.2em 10.3em 2em -10em #d4e6ff2f;
+    background: #121521;
+    z-index: 1;
+    filter: brightness(0.8);
+    position: absolute; left: 0; right: 0; margin: auto;
+    width: 20em; height: 20em;
+    rotate: 45deg;
+}
+.mountains > div:nth-child(1) {
+    bottom: -240%; 
+    translate: -6em 2em;
+    animation: mountainload1 2s ease-out 2.4s forwards;
+}
+.mountains > div:nth-child(2) {
+    bottom: -240%;
+    translate: -2em 0em;
+    width: 14em; height: 20em;
+    animation: mountainload2 2s ease-out 2.2s forwards;
+}
+.mountains > div:nth-child(3) {
+    bottom: -240%; 
+    translate: 6em 3em;
+    animation: mountainload1 2s ease-out 2s forwards;
+}
+@keyframes mountainload1 {
+    0% { bottom: -240%; }
+    100% { bottom: -140%; }
+}
+@keyframes mountainload2 {
+    0% { bottom: -240%; }
+    100% { bottom: -108%; }
+}
+.mountains > div::before {
+    content: ''; display: block;
+    background: repeating-radial-gradient( at 100% 100%, transparent 0%, #c2ccff22 2px, transparent 4px);
+    width: 12em; height: 12em;
+    position: absolute;
+    left: 0; top: 0;
+    border-bottom-right-radius: 100%;
+}
+
+.hero-spacer {
+    height: 40em;
+    pointer-events: none;
+}
+
+.content-section {
+    position: relative;
+    z-index: 1112;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    padding: 16em 0 12em 0;
+    overflow: hidden;
+}
+
+.content-section p.subt {
+    color: #d8ecf8be;
+    font-size: 0.8em;
+    font-weight: 200;
+    position: relative;
+    width: fit-content;
+    margin: auto;
+}
+.content-section h3 {
+    margin: 0.4em 0 0.6em 0;
+    font-size: 2.3em;
+    font-weight: 600;
+    color: #d8ecf8;
+    text-shadow: 0 2px 16px rgba(174,207,242,.24);
+    background: linear-gradient(0deg, #d8ecf8 0, #98c0ef 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.content-section p.subp {
+    color: #d8ecf8be;
+    font-size: 1em;
+    font-weight: 400;
+    max-width: 26em;
+    margin: auto;
+}
+
+.content-section p.subt::before,
+.content-section p.subt::after {
+    position: absolute; top: 60%; 
+    display: block; content: '';
+    width: 5em; height: 1px;
+    opacity: 0.5;
+}
+.content-section p.subt::before{
+    background: linear-gradient( -90deg, #9dc3f7 0%, transparent 100%);
+    right: 120%;
+    top: 50%;
+}
+.content-section p.subt::after {
+    background: linear-gradient( 90deg, #9dc3f7 0%, transparent 100%);
+    left: 120%;
+    top: 50%;
+}
+
+.content-section .content-acc {
+    position: absolute;
+    left: 0; right: 0; top: 25%; margin: auto;
+    display: flex; justify-content: center;
+}
+.content-section .content-acc div{
+    width: 10em; height: 10em;
+    border-radius: 50%;
+    box-shadow: 
+    -1em -0.2em 0.4em -1.1em #c2ccff,
+    inset 0em 0em 0em 2px #c2ccff,
+    inset 0.2em 0.3em 0.2em -0.2em #c2ccff,
+    inset -1.2em 2.3em 2em -0.5em #d4e6ff2f;
+    background: #121521;
+    z-index: 1;
+    filter: brightness(0.8);
+    background: repeating-radial-gradient( at 50% 50%, transparent 0%, #c2ccff22 2px, transparent 4px);
+    translate: -18em;
+}
+.content-section .content-acc div:nth-child(2){
+    translate: 18em 12em;
+    border-radius: 2em;
+    box-shadow: 
+    -1em -0.2em 0.4em -1.1em #c2ccff,
+    inset 0em 0em 0em 2px #c2ccff,
+    inset 0.2em 0.3em 0.2em -0.2em #c2ccff,
+    inset 10.8em 11.3em 2em -10.5em #d4e6ff2f;
+}
+  
+  
+  
+</style>
+
+</div>
+<p class="heroP">The world's best platform, <br>
+  To get perfect solution.<br>DESIGNED BY ROUSHAN AGRAWAL</p>
+
+
+
+
+
+
+<div class="mountains">
+	
+  
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+<div class="hero-spacer"></div>
+
+<div class="content-section">
+  <div class="content-acc">
+    <div></div>
+    <div></div>
+  </div>
+  <p class="subt">LETS HELP YOU BY GIVING PERFECT SOLUTION</p>
+  <h3 class="title">HOLD MY HALDS <br>
+     AND MOVE TOGETHER.</h3>
+  <p class="subp">Next Engine help to grow up, <br>We have a big comunity to make you perfect to stand with your own knowledge.
+	<br>Designed by Roushan Agrawal</p>
+</div>
+
+<script>
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+
+// Initial canvas size
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+let particleCount = calculateParticleCount();
+
+class Particle {
+    constructor() {
+        this.reset();
+        this.y = Math.random() * canvas.height;
+        this.fadeDelay = Math.random() * 600 + 100;
+        this.fadeStart = Date.now() + this.fadeDelay;
+        this.fadingOut = false;
+    }
+
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.speed = Math.random() / 5 + 0.1;
+        this.opacity = 1;
+        this.fadeDelay = Math.random() * 600 + 100;
+        this.fadeStart = Date.now() + this.fadeDelay;
+        this.fadingOut = false;
+    }
+
+    update() {
+        this.y -= this.speed;
+        if (this.y < 0) {
+            this.reset();
+        }
+
+        if (!this.fadingOut && Date.now() > this.fadeStart) {
+            this.fadingOut = true;
+        }
+        
+        if (this.fadingOut) {
+            this.opacity -= 0.008;
+            if (this.opacity <= 0) {
+                this.reset();
+            }
+        }
+    }
+
+    draw() {
+        ctx.fillStyle = `rgba(${255 - (Math.random() * 255/2)}, 255, 255, ${this.opacity})`;
+        ctx.fillRect(this.x, this.y, 0.4, Math.random() * 2 + 1);
+    }
+}
+
+function initParticles() {
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(particle => {
+        particle.update();
+        particle.draw();
+    });
+    requestAnimationFrame(animate);
+}
+
+function calculateParticleCount() {
+    return Math.floor((canvas.width * canvas.height) / 6000);
+}
+
+function onResize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particleCount = calculateParticleCount();
+    initParticles();
+}
+
+window.addEventListener('resize', onResize);
+
+initParticles();
+animate();
+
+</script>
+
+
+
+
+
+      <div id="ntp-content">
+          <img id="ntp-background" hidden>
+          <div id="ntp-background-controls">
+            <button id="ntp-image-remove"><i class="i carbon:trash-can"></i></button>
+            <button id="ntp-image-picker"><i class="i carbon:camera"></i></button>
+          </div>
+      </div>
+    </div>
+
+    <!-- findinpage ui -->
+
+    <div
+      id="findinpage-bar"
+      hidden
+      class="theme-background-color theme-text-color"
+    >
+      <input id="findinpage-input" class="mousetrap" />
+      <span id="findinpage-count" class="inline-text"></span>
+      <div class="divider"></div>
+      <button id="findinpage-previous-match">
+        <i class="i carbon:chevron-up navbar-action-button"></i>
+      </button>
+      <button id="findinpage-next-match">
+        <i class="i carbon:chevron-down navbar-action-button"></i>
+      </button>
+      <div class="divider"></div>
+      <button id="findinpage-end">
+        <i class="i carbon:close navbar-action-button"></i>
+      </button>
+    </div>
+
+    <div id="task-overlay" class="" hidden tabindex="-1">
+      <div
+        class="simulated-navbar windowDragHandle"
+        id="task-overlay-navbar"
+      >
+      <div class="task-search-input-container">
+        <i class="i carbon:search"></i>
+        <input type="search" id="task-search-input" class="mousetrap"/>
+      </div>
+    </div>
+      <div id="task-area"></div>
+      <button id="add-task">
+        <i class="i carbon:new-tab"></i>
+        <span></span>
+      </button>
+    </div>
+
+    <div id="download-bar" hidden>
+      <div id="download-container" role="list" class="has-thin-scrollbar"></div>
+      <button id="download-close-button" class="i carbon:close"></button>
+    </div>
+
+    <div class="modal" id="manager-setup-dialog" hidden>
+      <h3 class="modal-title" id="manager-setup-heading"></h3>
+      <button
+        id="manager-setup-close"
+        class="modal-close-button i carbon:close"
+      ></button>
+
+      <div id="manager-setup-instructions-primary">
+        <div
+          class="light-fade"
+          data-string="passwordManagerSetupStep1"
+          data-allowHTML
+        ></div>
+        <div class="spacer"></div>
+        <div
+          class="light-fade"
+          data-string="passwordManagerSetupStep2"
+          data-allowHTML
+        ></div>
+      </div>
+
+      <div id="manager-setup-instructions-secondary">
+        <div
+          class="light-fade"
+          data-string="passwordManagerInstallerSetup"
+          data-allowHTML
+        ></div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div
+        id="manager-setup-drop-box"
+        class="drag-and-drop-box"
+        data-string="passwordManagerSetupDragBox"
+      ></div>
+
+      <div class="spacer"></div>
+      <div class="spacer"></div>
+
+      <div class="buttons">
+        <input
+          type="button"
+          id="manager-setup-disable"
+          data-value="disableAutofill"
+        />
+      </div>
+    </div>
+
+    <div id="password-capture-bar" hidden>
+      <span id="password-capture-description"></span>
+      <input id="password-capture-username" type="text" required />
+      <span class="password-capture-section">
+        <input id="password-capture-password" type="password" required />
+        <button
+          id="password-capture-reveal-password"
+          class="i carbon:view"
+        ></button>
+      </span>
+      <span class="password-capture-section">
+        <button
+          id="password-capture-save"
+          data-string="passwordCaptureSave"
+        ></button>
+        <button
+          id="password-capture-ignore"
+          data-string="passwordCaptureDontSave"
+        ></button>
+      </span>
+      <button
+      id="password-capture-never-save"
+      data-string="passwordCaptureNeverSave"
+      ></button>
+    </div>
+
+    <div id="password-viewer" class="modal" hidden>
+      <h2 class="modal-title" data-string="savedPasswordsHeading"></h2>
+      <button class="modal-close-button i carbon:close"></button>
+      <div
+        id="password-viewer-empty"
+        data-string="savedPasswordsEmpty"
+        hidden
+      ></div>
+      <div id="password-viewer-list"></div>
+    </div>
+
+    <!-- add scripts in Gruntfile.js -->
+
+    <script src="dist/bundle.js"></script>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Welcome to NextEngine</title>
+  <link rel="stylesheet" href="onboarding.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand" aria-label="NextEngine">
+        <span class="brand-mark"><span></span></span>
+        <span>NextEngine</span>
+      </div>
+      <div class="step-status" id="step-status" aria-label="Onboarding step">Step 3 of 5 <span class="step-segments"><i></i><i></i><i></i><i></i><i></i></span></div>
+      <button class="window-close" id="close" aria-label="Close setup">&times;</button>
+    </header>
+
+    <section class="content" aria-live="polite">
+      <div class="eyebrow" id="eyebrow">A quieter way forward</div>
+      <div class="slides">
+        <article class="slide active" data-slide="0">
+          <div class="welcome-mark" aria-hidden="true"><span></span></div>
+          <h1>Welcome to<br><em>NextEngine</em></h1>
+          <p class="lead">A calmer, cleaner way to browse the internet.</p>
+        </article>
+
+        <article class="slide" data-slide="1">
+          <div class="browser-visual" aria-hidden="true">
+            <div class="browser-toolbar"><i></i><i></i><i></i><span></span><b></b></div>
+            <div class="browser-body"><div></div><div></div><div></div></div>
+          </div>
+          <h2>Introducing NextEngine</h2>
+          <p class="lead">The cleanest, safest browser<br>designed for a simpler web experience.</p>
+        </article>
+
+        <article class="slide experience" data-slide="2">
+          <div class="experience-heading">
+            <h2>Simple. <em>Private.</em> Powerful.</h2>
+            <p>Powerful shortcuts that make the web faster, easier, and more yours.</p>
+          </div>
+          <div class="experience-layout">
+            <div class="experience-demos">
+              <section class="demo-card shortcut-builder">
+                <div class="demo-card-heading"><span class="demo-icon purple">+</span><div><h3>Create your own shortcuts</h3><p>Turn the websites you use most into simple shortcuts (bangs).</p></div></div>
+                <div class="shortcut-form"><div><label>Name</label><span>YouTube</span></div><div><label>Shortcut</label><span class="command">!yt</span></div><div class="website-field"><label>Website</label><span>https://www.youtube.com</span></div><button>+ Create shortcut</button></div>
+                <div class="shortcut-result"><code>!yt</code><b>&rarr;</b><strong>YouTube</strong><small>Your own bangs, your way.</small></div>
+              </section>
+              <div class="demo-row">
+                <section class="demo-card bang-card"><div class="demo-card-heading"><span class="demo-icon blue">!</span><div><h3>Search with bangs</h3><p>Use ! shortcuts to jump directly to the websites you use.</p></div></div><div class="bang-list"><div><code>!yt</code><b>&rarr;</b><span class="site-mark youtube">▶</span>YouTube</div><div><code>!google</code><b>&rarr;</b><span class="site-mark google">G</span>Google</div><div><code>!gh</code><b>&rarr;</b><span class="site-mark github">●</span>GitHub</div><div><code>!docs</code><b>&rarr;</b><span class="site-mark drive">◆</span>Google Drive</div></div><strong class="create-more">+ Create your own shortcuts too!</strong></section>
+                <section class="demo-card address-card"><div class="demo-card-heading"><span class="demo-icon mint">↗</span><div><h3>Open websites instantly</h3><p>Type a website address and go directly there.</p></div></div><div class="address-demo"><div><code>github.com</code><b>&rarr;</b><strong>GitHub</strong></div><div><code>youtube.com</code><b>&rarr;</b><strong>YouTube</strong></div></div></section>
+              </div>
+              <div class="demo-row lower-row">
+                <section class="demo-card search-card"><div class="demo-card-heading"><span class="demo-icon peach">⌕</span><div><h3>Search a website</h3><p>Add your search terms and go straight to the results.</p></div></div><div class="search-demo"><code>youtube hlo</code><b>↓</b><strong>YouTube</strong><small>Searching YouTube for <em>'hlo'</em>...</small></div></section>
+                <section class="demo-card action-card"><div class="demo-card-heading"><span class="demo-icon lavender">✦</span><div><h3>See it in action</h3><p>Watch how NextEngine understands your commands.</p></div></div><div class="action-demo"><div><code>!youtube hlo</code><b>&rarr;</b><span>Opening YouTube<br><small>Searching for "hlo"</small></span></div><div><code>!google nextengine</code><b>&rarr;</b><span>Google search<br><small>"nextengine"</small></span></div></div></section>
+              </div>
+              <div class="local-row"><section class="local-card"><span class="local-illustration">▱</span><div><h3>Your data stays with you.</h3><p>Your personal browser data stays locally on your device.</p></div></section><section class="local-card cloud-card"><span class="flow-illustration">⌂ <b>↓</b> ◈</span><div><h3>No cloud required.</h3><p>Your personal browser data doesn't need a cloud server.</p></div></section></div>
+            </div>
+            <div class="browser-stage" aria-label="NextEngine shortcut demonstration">
+              <div class="stage-glow"></div><div class="browser-back back-one"></div><div class="browser-back back-two"></div>
+              <div class="mock-browser"><div class="mock-toolbar"><span class="traffic"><i></i><i></i><i></i></span><div class="mock-address"><span class="lock">⌁</span><span class="typing-command">!yt</span><span class="cursor"></span></div><span class="toolbar-dot">•••</span></div><div class="mock-content"><div class="mock-label">SHORTCUTS</div><div class="mock-command"><code>!yt</code><b>&rarr;</b><strong>YouTube</strong></div><div class="mock-command"><code>!google</code><b>&rarr;</b><strong>Google</strong></div><div class="mock-command"><code>!gh</code><b>&rarr;</b><strong>GitHub</strong></div><div class="mock-divider"></div><div class="mock-direct"><code>www.google.com</code><span>&rarr; Open directly</span></div><div class="mock-footer"><span class="mini-mark"></span><span>NextEngine understands your intent.</span></div></div></div>
+              <div class="stage-note">A faster path to the web <span>✦</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide default-slide" data-slide="3">
+          <div class="default-icon" aria-hidden="true"><span></span></div>
+          <h2>Make NextEngine your<br>default browser</h2>
+          <p class="lead">Open links faster with NextEngine.</p>
+          <div class="default-status" id="default-status"></div>
+          <div class="default-actions"><button class="secondary-button" id="skip-default">Skip for now</button><button class="primary-button" id="make-default">Make Default <span>&rarr;</span></button></div>
+        </article>
+
+        <article class="slide finish-slide" data-slide="4">
+          <div class="finish-mark" aria-hidden="true">&#10003;</div>
+          <h2>You're all set.</h2>
+          <p class="lead">Simple. Easy. Safe.</p>
+          <p class="welcome-line">Welcome to NextEngine.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <button class="back-button" id="back" aria-label="Go back"><span>&larr;</span> Back</button>
+      <div class="progress" id="progress" aria-label="Setup progress"></div>
+      <button class="primary-button next-button" id="next">Next <span>&rarr;</span></button>
+    </footer>
+  </main>
+  <script src="onboarding.js"></script>
+</body>
+</html>

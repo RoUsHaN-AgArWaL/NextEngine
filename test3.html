@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NextEngine — Settings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- base.css + settings.css + iconfont preserved via original link refs -->
+<link rel="stylesheet" href="../../css/base.css"/>
+<link rel="stylesheet" href="settings.css"/>
+<link rel="stylesheet" href="../../ext/icons/iconfont.css"/>
+
+<style>
+/* ═══════════════════════════════════════════════
+   NEXTENGINE SETTINGS — PREMIUM UI v4.0
+   ═══════════════════════════════════════════════ */
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+body{
+  font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:#08081a;color:#e2e8f0;min-height:100vh;overflow-x:hidden;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(139,92,246,.25);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:rgba(139,92,246,.5)}
+::selection{background:rgba(139,92,246,.3);color:#ede9fe}
+
+/* ═══ ANIMATED BACKGROUND ═══ */
+.bg-canvas{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.7;will-change:transform}
+.bg-orb-1{width:700px;height:700px;top:-200px;right:-200px;
+  background:radial-gradient(circle,rgba(99,102,241,.3) 0%,rgba(124,58,237,.15) 40%,transparent 70%);
+  animation:orbFloat1 18s ease-in-out infinite alternate}
+.bg-orb-2{width:500px;height:500px;bottom:-150px;left:-150px;
+  background:radial-gradient(circle,rgba(56,189,248,.2) 0%,rgba(14,165,233,.1) 40%,transparent 70%);
+  animation:orbFloat2 22s ease-in-out infinite alternate}
+.bg-orb-3{width:400px;height:400px;top:35%;left:40%;
+  background:radial-gradient(circle,rgba(236,72,153,.15) 0%,rgba(244,63,94,.08) 40%,transparent 70%);
+  animation:orbFloat3 15s ease-in-out infinite alternate}
+.bg-orb-4{width:300px;height:300px;top:60%;right:10%;
+  background:radial-gradient(circle,rgba(16,185,129,.12) 0%,transparent 60%);
+  animation:orbFloat1 20s ease-in-out infinite alternate-reverse}
+
+@keyframes orbFloat1{0%{transform:translate(0,0) scale(1) rotate(0deg)}100%{transform:translate(40px,60px) scale(1.1) rotate(10deg)}}
+@keyframes orbFloat2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-30px,50px) scale(1.15)}}
+@keyframes orbFloat3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(50px,-30px) scale(1.08)}}
+
+.bg-grid{position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(139,92,246,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(139,92,246,.03) 1px,transparent 1px);
+  background-size:48px 48px}
+
+/* Noise texture overlay */
+.bg-noise{position:absolute;inset:0;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:128px 128px}
+
+/* ═══ APP WRAPPER ═══ */
+.app-wrapper{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
+
+/* ═══ TOPBAR ═══ */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,8,26,.8);
+  backdrop-filter:saturate(200%) blur(30px);-webkit-backdrop-filter:saturate(200%) blur(30px);
+  border-bottom:1px solid rgba(139,92,246,.1);
+}
+.topbar::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(139,92,246,.3) 20%,rgba(99,102,241,.4) 50%,rgba(139,92,246,.3) 80%,transparent)}
+.topbar-inner{max-width:1200px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.topbar-left{display:flex;align-items:center;gap:16px}
+
+/* Logo */
+.logo-mark{
+  width:38px;height:38px;border-radius:11px;flex-shrink:0;position:relative;
+  background:linear-gradient(135deg,#7c3aed 0%,#6366f1 50%,#4338ca 100%);
+  box-shadow:0 0 0 1px rgba(139,92,246,.3),0 4px 20px rgba(124,58,237,.5),0 0 40px rgba(124,58,237,.15);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  animation:logoGlow 4s ease-in-out infinite alternate
+}
+@keyframes logoGlow{0%{box-shadow:0 0 0 1px rgba(139,92,246,.3),0 4px 20px rgba(124,58,237,.5),0 0 40px rgba(124,58,237,.15)}100%{box-shadow:0 0 0 1px rgba(139,92,246,.4),0 4px 24px rgba(124,58,237,.6),0 0 60px rgba(124,58,237,.2)}}
+.logo-mark::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.3) 0%,transparent 50%);border-radius:11px}
+.logo-mark::after{content:'';position:absolute;inset:1px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,.12) 0%,transparent 50%)}
+.logo-mark svg{width:20px;height:20px;stroke:white;fill:none;stroke-width:1.75;position:relative;z-index:1}
+
+.logo-text{line-height:1}
+.logo-name{font-size:16px;font-weight:900;color:#f8fafc;letter-spacing:-.4px;
+  background:linear-gradient(135deg,#f8fafc 0%,#c4b5fd 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-size:8.5px;font-weight:700;color:rgba(148,163,184,.45);letter-spacing:.22em;text-transform:uppercase;margin-top:2px}
+
+.topbar-center{position:absolute;left:50%;transform:translateX(-50%);
+  font-size:11px;font-weight:700;color:rgba(148,163,184,.4);letter-spacing:.2em;text-transform:uppercase}
+
+.topbar-right{display:flex;align-items:center;gap:12px}
+.version-badge{display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:99px;
+  background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);
+  backdrop-filter:blur(10px)}
+.version-dot{width:7px;height:7px;border-radius:50%;background:#10b981;flex-shrink:0;
+  box-shadow:0 0 0 3px rgba(16,185,129,.15),0 0 12px rgba(16,185,129,.3);animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,.15),0 0 12px rgba(16,185,129,.3)}50%{box-shadow:0 0 0 6px rgba(16,185,129,.05),0 0 20px rgba(16,185,129,.15)}}
+.version-text{font-size:11px;font-weight:700;color:#34d399;letter-spacing:.02em}
+
+.hamburger-btn{display:none;width:38px;height:38px;border-radius:11px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  align-items:center;justify-content:center;cursor:pointer;transition:all .25s}
+.hamburger-btn:hover{background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.25)}
+.hamburger-btn svg{width:18px;height:18px;stroke:#94a3b8;fill:none;stroke-width:2}
+
+/* ═══ BODY LAYOUT ═══ */
+.body-layout{max-width:1200px;margin:0 auto;padding:32px 28px 100px;display:flex;gap:28px;align-items:flex-start}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar{width:240px;flex-shrink:0;position:sticky;top:96px;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.sidebar-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:22px;overflow:hidden;
+  box-shadow:0 8px 48px rgba(0,0,0,.5),0 2px 12px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)
+}
+.sidebar-header{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:9px}
+.sidebar-header svg{width:14px;height:14px;stroke:rgba(148,163,184,.35);fill:none;stroke-width:1.75}
+.sidebar-header-text{font-size:9px;font-weight:800;color:rgba(148,163,184,.3);letter-spacing:.2em;text-transform:uppercase}
+
+.sidebar-nav{padding:10px;display:flex;flex-direction:column;gap:3px}
+
+.nav-btn{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 14px;border-radius:13px;border:none;
+  background:transparent;cursor:pointer;
+  transition:all .2s cubic-bezier(.22,1,.36,1);
+  width:100%;text-align:left;position:relative;overflow:hidden
+}
+.nav-btn::before{content:'';position:absolute;inset:0;border-radius:13px;opacity:0;
+  background:linear-gradient(135deg,rgba(124,58,237,.15) 0%,rgba(99,102,241,.1) 100%);
+  transition:opacity .2s}
+.nav-btn:hover::before{opacity:1}
+.nav-btn:hover{transform:translateX(2px)}
+
+.nav-btn.active{background:none;transform:translateX(0)}
+.nav-btn.active::before{
+  opacity:1;
+  background:linear-gradient(135deg,rgba(124,58,237,.85) 0%,rgba(79,70,229,.85) 100%);
+}
+.nav-btn.active::after{
+  content:'';position:absolute;inset:0;border-radius:13px;
+  box-shadow:0 4px 20px rgba(124,58,237,.35),inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(255,255,255,.08);
+  pointer-events:none
+}
+
+.nav-btn-icon{width:18px;height:18px;flex-shrink:0;opacity:.4;transition:all .2s;position:relative;z-index:1}
+.nav-btn.active .nav-btn-icon{opacity:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3))}
+.nav-btn:hover .nav-btn-icon{opacity:.7}
+.nav-btn-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.75}
+
+.nav-btn-label{font-size:13px;font-weight:600;flex:1;color:rgba(148,163,184,.6);transition:all .2s;position:relative;z-index:1}
+.nav-btn.active .nav-btn-label{color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.3)}
+.nav-btn:hover .nav-btn-label{color:#c4b5fd}
+
+.nav-btn-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.6);flex-shrink:0;position:relative;z-index:1;
+  box-shadow:0 0 6px rgba(255,255,255,.3)}
+
+.sidebar-footer{
+  margin:6px 10px 10px;padding:14px 16px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(124,58,237,.08) 0%,rgba(99,102,241,.05) 100%);
+  border:1px solid rgba(139,92,246,.12);position:relative;overflow:hidden
+}
+.sidebar-footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(139,92,246,.25),transparent)}
+.sidebar-footer-row{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.sidebar-footer-icon{width:24px;height:24px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,#7c3aed,#4338ca);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(124,58,237,.4)}
+.sidebar-footer-icon svg{width:13px;height:13px;stroke:white;fill:none;stroke-width:2}
+.sidebar-footer-name{font-size:11.5px;font-weight:800;color:#e2e8f0;letter-spacing:-.2px}
+.sidebar-footer-desc{font-size:10px;color:rgba(148,163,184,.4);line-height:1.5}
+
+.mobile-overlay{display:none;position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.65);backdrop-filter:blur(8px)}
+.mobile-overlay.open{display:block}
+
+/* ═══ MAIN CONTENT ═══ */
+.main-content{flex:1;min-width:0}
+
+/* ═══ SECTION ANIMATION ═══ */
+@keyframes sectionIn{
+  from{opacity:0;transform:translateY(20px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.section-animate{animation:sectionIn .4s cubic-bezier(.22,1,.36,1) both}
+.section-animate .section-body>*{animation:fadeInUp .35s cubic-bezier(.22,1,.36,1) both}
+.section-animate .section-body>*:nth-child(1){animation-delay:.05s}
+.section-animate .section-body>*:nth-child(2){animation-delay:.08s}
+.section-animate .section-body>*:nth-child(3){animation-delay:.11s}
+.section-animate .section-body>*:nth-child(4){animation-delay:.14s}
+.section-animate .section-body>*:nth-child(5){animation-delay:.17s}
+.section-animate .section-body>*:nth-child(6){animation-delay:.2s}
+.section-animate .section-body>*:nth-child(7){animation-delay:.23s}
+.section-animate .section-body>*:nth-child(8){animation-delay:.26s}
+.section-animate .section-body>*:nth-child(9){animation-delay:.29s}
+.section-animate .section-body>*:nth-child(10){animation-delay:.32s}
+.section-animate .section-body>*:nth-child(11){animation-delay:.35s}
+.section-animate .section-body>*:nth-child(12){animation-delay:.38s}
+
+/* ═══ SETTINGS CONTAINER (card) ═══ */
+.settings-container{
+  display:none;position:relative;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:28px;overflow:hidden;
+  box-shadow:0 12px 48px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  transition:all .35s cubic-bezier(.22,1,.36,1);
+  margin-bottom:24px
+}
+.settings-container:hover{
+  border-color:rgba(255,255,255,.1);
+  box-shadow:0 16px 56px rgba(0,0,0,.45),0 4px 16px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.06);
+  transform:translateY(-1px)
+}
+.settings-container.visible{display:block}
+
+/* Accent bar */
+.section-accent-bar{position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--accent-grad,linear-gradient(90deg,#7c3aed,#4338ca));
+  box-shadow:0 0 20px var(--accent-glow,rgba(124,58,237,.3))}
+
+/* Section header */
+.section-header{display:flex;align-items:center;gap:16px;padding:26px 28px 22px;
+  border-bottom:1px solid rgba(255,255,255,.05);position:relative}
+.section-header::after{content:'';position:absolute;bottom:-1px;left:28px;right:28px;height:1px;
+  background:linear-gradient(90deg,var(--accent-glow,rgba(124,58,237,.15)),transparent 70%)}
+
+.section-icon{
+  width:44px;height:44px;border-radius:14px;flex-shrink:0;position:relative;
+  background:var(--accent-grad,linear-gradient(135deg,#7c3aed,#4338ca));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px var(--accent-glow,rgba(124,58,237,.4)),inset 0 1px 0 rgba(255,255,255,.2)
+}
+.section-icon::after{content:'';position:absolute;inset:1px;border-radius:13px;
+  background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 60%)}
+.section-icon svg{width:20px;height:20px;stroke:white;fill:none;stroke-width:1.75;position:relative;z-index:1}
+
+.section-header h3{font-size:17px;font-weight:800;color:#f1f5f9;letter-spacing:-.4px}
+.section-body{padding:24px 24px 28px}
+
+/* ═══ FIELD LABELS ═══ */
+.field-label{font-size:10px;font-weight:800;color:rgba(148,163,184,.4);letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;margin-top:4px}
+.section-divider{border:none;border-top:1px solid rgba(255,255,255,.05);margin:18px 0}
+
+/* ═══ STATS CHIP ═══ */
+.stats-chip{
+  display:flex;align-items:center;gap:16px;
+  padding:20px 22px;border-radius:20px;margin-bottom:20px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(124,58,237,.12) 0%,rgba(99,102,241,.06) 100%);
+  border:1px solid rgba(139,92,246,.2)
+}
+.stats-chip::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(139,92,246,.3),transparent)}
+.stats-chip-icon{
+  width:48px;height:48px;border-radius:14px;flex-shrink:0;position:relative;
+  background:linear-gradient(135deg,#7c3aed,#6366f1);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(124,58,237,.5),inset 0 1px 0 rgba(255,255,255,.2)
+}
+.stats-chip-icon::after{content:'';position:absolute;inset:1px;border-radius:13px;
+  background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 50%)}
+.stats-chip-icon svg{width:22px;height:22px;stroke:white;fill:none;stroke-width:1.75;position:relative;z-index:1}
+.stats-chip-count{font-size:30px;font-weight:900;letter-spacing:-1.5px;line-height:1;
+  background:linear-gradient(135deg,#c4b5fd,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stats-chip-label{font-size:11.5px;font-weight:600;color:rgba(167,139,250,.6);margin-top:4px}
+.stats-chip-status{margin-left:auto;text-align:right}
+.stats-chip-status-label{font-size:9px;font-weight:800;color:rgba(148,163,184,.35);text-transform:uppercase;letter-spacing:.14em}
+.stats-chip-status-value{font-size:14px;font-weight:800;color:#34d399;margin-top:3px;
+  text-shadow:0 0 12px rgba(52,211,153,.3)}
+
+/* ═══ RADIO CARDS ═══ */
+.radio-card-group{display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+.radio-card{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 18px;border-radius:16px;cursor:pointer;
+  border:1.5px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.02);
+  transition:all .25s cubic-bezier(.22,1,.36,1);user-select:none;
+  position:relative;overflow:hidden
+}
+.radio-card::before{content:'';position:absolute;inset:0;border-radius:16px;opacity:0;
+  background:linear-gradient(135deg,rgba(124,58,237,.08) 0%,rgba(79,70,229,.05) 100%);transition:opacity .25s}
+.radio-card:hover{border-color:rgba(255,255,255,.1);transform:translateX(3px)}
+.radio-card:hover::before{opacity:1}
+.radio-card.active{border-color:rgba(139,92,246,.4);transform:translateX(0);
+  box-shadow:0 4px 24px rgba(124,58,237,.15),inset 0 0 0 1px rgba(139,92,246,.1)}
+.radio-card.active::before{opacity:1;
+  background:linear-gradient(135deg,rgba(124,58,237,.1) 0%,rgba(79,70,229,.06) 100%)}
+.radio-card input[type=radio]{position:absolute;opacity:0;pointer-events:none;width:0}
+.radio-card-emoji{font-size:20px;flex-shrink:0;filter:grayscale(.3);transition:filter .25s}
+.radio-card.active .radio-card-emoji{filter:grayscale(0)}
+.radio-card-body{flex:1}
+.radio-card-title{font-size:14px;font-weight:650;color:#94a3b8;transition:color .25s}
+.radio-card.active .radio-card-title{color:#c4b5fd}
+.radio-card-desc{font-size:11.5px;color:rgba(148,163,184,.4);margin-top:3px;transition:color .25s}
+.radio-card.active .radio-card-desc{color:rgba(167,139,250,.5)}
+
+.radio-indicator{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  border:2px solid rgba(148,163,184,.2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s cubic-bezier(.22,1,.36,1)
+}
+.radio-card.active .radio-indicator{border-color:#7c3aed;background:linear-gradient(135deg,#7c3aed,#6366f1);
+  box-shadow:0 0 0 4px rgba(124,58,237,.15),0 2px 8px rgba(124,58,237,.3)}
+.radio-indicator-dot{width:8px;height:8px;border-radius:50%;background:white;
+  opacity:0;transform:scale(0);transition:all .25s cubic-bezier(.22,1,.36,1)}
+.radio-card.active .radio-indicator-dot{opacity:1;transform:scale(1)}
+
+/* ═══ DARK MODE GRID ═══ */
+.dark-mode-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.dark-mode-card{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:16px 10px;border-radius:16px;cursor:pointer;
+  border:1.5px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.02);
+  transition:all .25s cubic-bezier(.22,1,.36,1);user-select:none;text-align:center;
+  position:relative;overflow:hidden
+}
+.dark-mode-card:hover{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04);transform:translateY(-2px)}
+.dark-mode-card.active{
+  border-color:rgba(217,70,239,.4);
+  background:linear-gradient(180deg,rgba(192,38,211,.08) 0%,rgba(124,58,237,.04) 100%);
+  box-shadow:0 4px 24px rgba(192,38,211,.12),inset 0 0 0 1px rgba(217,70,239,.1);
+  transform:translateY(-2px)
+}
+.dark-mode-card input[type=radio]{position:absolute;opacity:0;pointer-events:none;width:0}
+.dark-mode-card-icon{font-size:24px;transition:transform .25s}
+.dark-mode-card:hover .dark-mode-card-icon{transform:scale(1.1)}
+.dark-mode-card.active .dark-mode-card-icon{transform:scale(1.15)}
+.dark-mode-card-label{font-size:11px;font-weight:700;color:rgba(148,163,184,.4);transition:color .25s}
+.dark-mode-card.active .dark-mode-card-label{color:#e879f9;text-shadow:0 0 12px rgba(232,121,249,.3)}
+
+/* Selection dot under active dark mode card */
+.dark-mode-card .dm-dot{width:4px;height:4px;border-radius:50%;background:rgba(148,163,184,.2);margin-top:-2px;transition:all .25s}
+.dark-mode-card.active .dm-dot{background:#e879f9;box-shadow:0 0 8px rgba(232,121,249,.4);width:16px;border-radius:2px}
+
+/* ═══ TOGGLE ROWS ═══ */
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px 18px;border-radius:16px;
+  transition:all .2s;cursor:pointer;position:relative
+}
+.toggle-row:hover{background:rgba(255,255,255,.03)}
+.toggle-row-body{flex:1;min-width:0}
+.toggle-row-label-wrap{display:flex;align-items:center;gap:10px}
+.toggle-row-label{font-size:14px;font-weight:600;color:#cbd5e1;cursor:pointer}
+.toggle-badge{padding:3px 8px;border-radius:6px;
+  font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+  background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.15)}
+.toggle-row-sub{font-size:12px;color:rgba(148,163,184,.38);margin-top:4px;line-height:1.4}
+
+/* Toggle switch */
+.toggle-switch{position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer;background:none;border:none;padding:0}
+.toggle-switch input{position:absolute;opacity:0;width:0;height:0}
+.toggle-track{
+  position:absolute;inset:0;border-radius:99px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);
+  transition:all .35s cubic-bezier(.22,1,.36,1)
+}
+.toggle-switch.on .toggle-track{
+  background:linear-gradient(135deg,#7c3aed,#6366f1);border-color:transparent;
+  box-shadow:0 0 0 4px rgba(124,58,237,.15),0 2px 12px rgba(124,58,237,.4)
+}
+.toggle-thumb{
+  position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+  background:rgba(148,163,184,.5);
+  box-shadow:0 1px 4px rgba(0,0,0,.4);
+  transition:all .35s cubic-bezier(.22,1,.36,1)
+}
+.toggle-switch.on .toggle-thumb{
+  left:25px;background:white;
+  box-shadow:0 2px 8px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.1)
+}
+
+/* ═══ SELECT ═══ */
+.styled-select-wrap{position:relative}
+.styled-select{
+  width:100%;appearance:none;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:12px 44px 12px 16px;
+  font-size:14px;font-weight:500;color:#cbd5e1;
+  cursor:pointer;transition:all .25s;font-family:'Inter',system-ui,sans-serif
+}
+.styled-select:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.styled-select:focus{outline:none;border-color:rgba(139,92,246,.4);
+  box-shadow:0 0 0 4px rgba(124,58,237,.1),0 0 20px rgba(124,58,237,.08);background:rgba(255,255,255,.05)}
+.styled-select option{background:#13132b;color:#e2e8f0;padding:8px}
+.select-chevron{position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:rgba(148,163,184,.35)}
+.select-chevron svg{width:16px;height:16px;fill:currentColor}
+
+/* ═══ TEXT INPUT ═══ */
+.styled-input{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:12px 16px;
+  font-size:14px;font-weight:500;color:#cbd5e1;
+  transition:all .25s;font-family:'Inter',system-ui,sans-serif
+}
+.styled-input::placeholder{color:rgba(148,163,184,.25)}
+.styled-input:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.styled-input:focus{outline:none;border-color:rgba(139,92,246,.4);
+  box-shadow:0 0 0 4px rgba(124,58,237,.1);background:rgba(255,255,255,.05)}
+
+/* ═══ TEXTAREA ═══ */
+.styled-textarea{
+  width:100%;max-width:500px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:12px 16px;
+  font-size:13px;color:#cbd5e1;font-family:'Inter',system-ui,sans-serif;
+  resize:vertical;transition:all .25s
+}
+.styled-textarea:focus{outline:none;border-color:rgba(139,92,246,.4);box-shadow:0 0 0 4px rgba(124,58,237,.1)}
+
+/* ═══ INFO HINT ═══ */
+.info-hint{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:14px 16px;border-radius:14px;
+  background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.12);margin-top:12px
+}
+.info-hint-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.info-hint p{font-size:12.5px;color:rgba(251,191,36,.65);line-height:1.6;font-weight:500}
+.info-hint p strong{color:rgba(251,191,36,.85)}
+
+/* ═══ KEYBOARD SHORTCUTS ═══ */
+.shortcut-help{font-size:12.5px;color:rgba(148,163,184,.35);font-weight:500;margin-bottom:10px}
+.shortcut-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 18px;border-radius:14px;
+  border:1px solid transparent;transition:all .25s;cursor:pointer
+}
+.shortcut-row:hover{background:rgba(251,191,36,.04);border-color:rgba(251,191,36,.12);transform:translateX(3px)}
+.shortcut-action{font-size:14px;color:#94a3b8;font-weight:500}
+
+kbd{
+  padding:6px 12px;border-radius:9px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  font-size:11px;font-family:'SF Mono','Fira Code','JetBrains Mono',monospace;
+  color:rgba(148,163,184,.6);letter-spacing:-.2px;
+  box-shadow:0 2px 0 rgba(0,0,0,.4),inset 0 -1px 0 rgba(0,0,0,.2);
+  transition:all .25s
+}
+.shortcut-row:hover kbd{border-color:rgba(251,191,36,.25);color:#fbbf24;background:rgba(251,191,36,.06);
+  box-shadow:0 2px 0 rgba(0,0,0,.4),0 0 12px rgba(251,191,36,.08)}
+
+/* ═══ BANG ROWS ═══ */
+.bang-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:16px;
+  background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);
+  transition:all .25s;position:relative;overflow:hidden
+}
+.bang-row:hover{background:rgba(244,63,94,.03);border-color:rgba(244,63,94,.12);transform:translateX(3px)}
+.bang-code{
+  font-family:'SF Mono','Fira Code','JetBrains Mono',monospace;
+  font-size:12px;font-weight:800;
+  color:#fb7185;background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.15);
+  padding:6px 12px;border-radius:9px;flex-shrink:0
+}
+.bang-url{font-size:12px;color:rgba(148,163,184,.38);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bang-del-btn{
+  width:30px;height:30px;border-radius:9px;flex-shrink:0;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:all .25s;opacity:0;transform:scale(.9)
+}
+.bang-row:hover .bang-del-btn{opacity:1;transform:scale(1)}
+.bang-del-btn:hover{background:rgba(244,63,94,.12);border-color:rgba(244,63,94,.25)}
+.bang-del-btn svg{width:14px;height:14px;stroke:#fb7185;fill:none;stroke-width:2.5}
+
+.add-bang-btn{
+  display:flex;align-items:center;gap:9px;margin-top:16px;
+  padding:11px 22px;border-radius:14px;cursor:pointer;
+  background:linear-gradient(135deg,#f43f5e 0%,#e11d48 100%);
+  border:none;color:white;font-size:13px;font-weight:700;
+  box-shadow:0 4px 20px rgba(244,63,94,.3),inset 0 1px 0 rgba(255,255,255,.2);
+  transition:all .25s;font-family:'Inter',system-ui,sans-serif;position:relative;overflow:hidden
+}
+.add-bang-btn::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 50%)}
+.add-bang-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(244,63,94,.4)}
+.add-bang-btn:active{transform:scale(.97)}
+.add-bang-btn svg{width:15px;height:15px;stroke:white;fill:none;stroke-width:2.5;position:relative;z-index:1}
+
+/* ═══ PRESERVED ELEMENT STYLES ═══ */
+.exceptions-area{padding:16px 0 6px}
+.exceptions-label{font-size:12px;font-weight:600;color:rgba(148,163,184,.45);margin-bottom:10px;display:block}
+#customize-filters-link{font-size:12px;color:#8b5cf6;font-weight:600;text-decoration:none;display:inline-block;margin-top:12px;transition:color .2s}
+#customize-filters-link:hover{color:#a78bfa;text-decoration:underline}
+#userscripts-show-directory a{font-size:12px;color:#8b5cf6;font-weight:600;text-decoration:none;cursor:pointer;transition:color .2s}
+#userscripts-show-directory a:hover{color:#a78bfa;text-decoration:underline}
+#keychain-view-link a{font-size:13px;color:#34d399;font-weight:600;text-decoration:none;cursor:pointer;transition:color .2s}
+#keychain-view-link a:hover{color:#6ee7b7;text-decoration:underline}
+
+#input-user-agent{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:11px 16px;font-size:13px;color:#cbd5e1;
+  font-family:'Inter',system-ui,sans-serif;transition:all .25s;margin-left:0!important;width:100%!important;max-width:400px
+}
+#input-user-agent:focus{outline:none;border-color:rgba(139,92,246,.4);box-shadow:0 0 0 4px rgba(124,58,237,.1)}
+
+#custom-search-engine{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:11px 16px;font-size:13px;color:#cbd5e1;
+  font-family:'Inter',system-ui,sans-serif;transition:all .25s;width:100%;margin-top:12px;margin-left:0!important;min-width:unset!important
+}
+#custom-search-engine:focus{outline:none;border-color:rgba(59,130,246,.4);box-shadow:0 0 0 4px rgba(59,130,246,.08)}
+
+#content-blocking-exceptions{
+  width:100%;max-width:500px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:12px 16px;font-size:13px;color:#cbd5e1;
+  font-family:'Inter',system-ui,sans-serif;resize:vertical
+}
+#content-blocking-exceptions:focus{outline:none;border-color:rgba(139,92,246,.4);box-shadow:0 0 0 4px rgba(124,58,237,.1)}
+
+/* ═══ RESTART BANNER ═══ */
+#restart-required-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(8,8,26,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid rgba(251,191,36,.2);
+  box-shadow:0 -4px 48px rgba(0,0,0,.5)
+}
+#restart-required-banner::before{content:'';position:absolute;top:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(251,191,36,.4),transparent)}
+.banner-inner{max-width:1200px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;gap:16px}
+.banner-icon{
+  width:36px;height:36px;border-radius:11px;flex-shrink:0;
+  background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);
+  display:flex;align-items:center;justify-content:center
+}
+.banner-icon svg{width:18px;height:18px;stroke:#fbbf24;fill:none;stroke-width:2}
+.banner-text{font-size:13.5px;font-weight:650;color:rgba(251,191,36,.85);flex:1}
+.banner-btn-primary{
+  padding:9px 20px;border-radius:11px;cursor:pointer;
+  background:linear-gradient(135deg,#d97706,#b45309);
+  border:none;color:white;font-size:12.5px;font-weight:700;
+  box-shadow:0 2px 12px rgba(217,119,6,.3),inset 0 1px 0 rgba(255,255,255,.2);
+  transition:all .25s;font-family:'Inter',system-ui,sans-serif
+}
+.banner-btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(217,119,6,.4)}
+.banner-btn-secondary{
+  padding:9px 16px;border-radius:11px;cursor:pointer;
+  background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15);
+  color:rgba(251,191,36,.6);font-size:12.5px;font-weight:700;
+  transition:all .25s;font-family:'Inter',system-ui,sans-serif
+}
+.banner-btn-secondary:hover{background:rgba(251,191,36,.1);color:#fbbf24}
+
+.field-group{margin-bottom:20px}
+.field-group:last-child{margin-bottom:0}
+
+[hidden]{display:none!important}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:768px){
+  .topbar-center{display:none}
+  .hamburger-btn{display:flex}
+  .sidebar{position:fixed;top:0;left:0;height:100vh;z-index:100;transform:translateX(-100%);padding-top:74px;width:260px}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-card{height:100%;border-radius:0 24px 24px 0;overflow-y:auto}
+  .body-layout{padding:24px 16px 100px}
+  .dark-mode-grid{grid-template-columns:repeat(2,1fr)}
+  .version-badge{display:none}
+  .settings-container{border-radius:22px}
+  .section-header{padding:22px 20px 18px}
+  .section-body{padding:20px 18px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ BACKGROUND ═══ -->
+<div class="bg-canvas">
+  <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-orb bg-orb-4"></div>
+</div>
+
+<div class="app-wrapper">
+
+  <!-- ═══ TOPBAR ═══ -->
+  <header class="topbar short-hero blue-gradient-background">
+    <div class="topbar-inner container">
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+        </button>
+        <div class="logo-mark">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5a17.92 17.92 0 01-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg>
+        </div>
+        <div class="logo-text">
+          <div class="logo-name">NextEngine</div>
+          <div class="logo-sub">Browser</div>
+        </div>
+      </div>
+      <h2 class="topbar-center" data-string="settingsPreferencesHeading">Preferences</h2>
+      <div class="topbar-right">
+        <div class="version-badge">
+          <span class="version-dot"></span>
+          <span class="version-text">v3.0 — Up to date</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN LAYOUT ═══ -->
+  <div class="body-layout">
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-header">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg>
+          <span class="sidebar-header-text">Navigation</span>
+        </div>
+        <nav class="sidebar-nav" id="sidebar-nav">
+          <button class="nav-btn active" data-section="privacy">
+            <span class="nav-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></span>
+            <span class="nav-btn-label">Privacy</span>
+            <span class="nav-btn-dot"></span>
+          </button>
+          <button class="nav-btn" data-section="appearance">
+            <span class="nav-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"/></svg></span>
+            <span class="nav-btn-label">Appearance</span>
+            <span class="nav-btn-dot"></span>
+          </button>
+          <button class="nav-btn" data-section="additional">
+            <span class="nav-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></span>
+            <span class="nav-btn-label">Features</span>
+            <span class="nav-btn-dot"></span>
+          </button>
+          <button class="nav-btn" data-section="search">
+            <span class="nav-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z"/></svg></span>
+            <span class="nav-btn-label">Search</span>
+            <span class="nav-btn-dot"></span>
+          </button>
+          <button class="nav-btn" data-section="password">
+            <span class="nav-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/></svg></span>
+            <span class="nav-btn-label">Passwords</span>
+            <span class="nav-btn-dot"></span>
+          </button>
+          <button class="nav-btn" data-section="proxy">
+            <span class="nav-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg></span>
+            <span class="nav-btn-label">Proxy</span>
+            <span class="nav-btn-dot"></span>
+          </button>
+          <button class="nav-btn" data-section="keymap">
+            <span class="nav-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg></span>
+            <span class="nav-btn-label">Shortcuts</span>
+            <span class="nav-btn-dot"></span>
+          </button>
+          <button class="nav-btn" data-section="bangs">
+            <span class="nav-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5"/></svg></span>
+            <span class="nav-btn-label">Bangs</span>
+            <span class="nav-btn-dot"></span>
+          </button>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="sidebar-footer-row">
+            <div class="sidebar-footer-icon">
+              <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+            </div>
+            <span class="sidebar-footer-name">NextEngine v3.0</span>
+          </div>
+          <div class="sidebar-footer-desc">Secure · Private · Up to date</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main class="main-content" id="main-content">
+
+      <!-- PRIVACY -->
+      <div class="settings-container visible section-animate" id="privacy-settings-container" data-section-id="privacy"
+           style="--accent-grad:linear-gradient(135deg,#7c3aed,#6366f1);--accent-glow:rgba(124,58,237,.35)">
+        <div class="section-accent-bar"></div>
+        <div class="section-header">
+          <div class="section-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+          <h3 data-string="settingsPrivacyHeading">Privacy &amp; Security</h3>
+        </div>
+        <div class="section-body">
+          <div class="stats-chip settings-info-subheading" id="content-blocking-statistics">
+            <div class="stats-chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+            <div><span data-string="settingsBlockedRequestCount" data-allowHTML id="content-blocking-blocked-requests"><div class="stats-chip-count">12,847</div><div class="stats-chip-label">requests blocked this session</div></span></div>
+            <div class="stats-chip-status"><div class="stats-chip-status-label">Protection</div><div class="stats-chip-status-value">Active</div></div>
+          </div>
+          <hr class="section-divider"/>
+          <div class="field-label">Content Blocking Level</div>
+          <div class="setting-section radio-card-group" id="tracking-level-container">
+            <label class="radio-card" for="blocking-allow-all" onclick="selectRadioCard(this,'blockingLevel')">
+              <input type="radio" name="blockingLevel" id="blocking-allow-all" data-string="settingsContentBlockingLevel0"/>
+              <span class="radio-card-emoji">🟢</span>
+              <div class="radio-card-body"><div class="radio-card-title">Allow all requests</div><div class="radio-card-desc">No content filtering — full speed, no protection</div></div>
+              <div class="radio-indicator"><div class="radio-indicator-dot"></div></div>
+            </label>
+            <label class="radio-card active" for="blocking-third-party" onclick="selectRadioCard(this,'blockingLevel')">
+              <input type="radio" name="blockingLevel" id="blocking-third-party" data-string="settingsContentBlockingLevel1" checked/>
+              <span class="radio-card-emoji">🟡</span>
+              <div class="radio-card-body"><div class="radio-card-title">Block third-party trackers</div><div class="radio-card-desc">Stop cross-site trackers and invasive ads</div></div>
+              <div class="radio-indicator"><div class="radio-indicator-dot"></div></div>
+            </label>
+            <label class="radio-card" for="blocking-block-all" onclick="selectRadioCard(this,'blockingLevel')">
+              <input type="radio" name="blockingLevel" id="blocking-block-all" data-string="settingsContentBlockingLevel2"/>
+              <span class="radio-card-emoji">🔴</span>
+              <div class="radio-card-body"><div class="radio-card-title">Block all third-party</div><div class="radio-card-desc">Maximum protection — may break some sites</div></div>
+              <div class="radio-indicator"><div class="radio-indicator-dot"></div></div>
+            </label>
+            <div id="content-blocking-information" hidden>
+              <div class="exceptions-area">
+                <label class="exceptions-label" for="content-blocking-exceptions" data-string="settingsContentBlockingExceptions">Exceptions</label>
+                <textarea spellcheck="false" id="content-blocking-exceptions" class="styled-textarea" style="width:100%;max-width:500px" rows="1"></textarea>
+              </div>
+              <a id="customize-filters-link" href="https://github.com/minbrowser/min/wiki/Content-blocking-settings" data-string="settingsCustomizeFiltersLink">Customize filter lists →</a>
+            </div>
+          </div>
+          <div id="content-type-blocking"></div>
+        </div>
+      </div>
+
+      <!-- APPEARANCE -->
+      <div class="settings-container" id="appearance-settings-container" data-section-id="appearance"
+           style="--accent-grad:linear-gradient(135deg,#c026d3,#a855f7);--accent-glow:rgba(192,38,211,.3)">
+        <div class="section-accent-bar"></div>
+        <div class="section-header">
+          <div class="section-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"/></svg></div>
+          <h3 data-string="settingsAppearanceHeading">Appearance</h3>
+        </div>
+        <div class="section-body">
+          <label for="dark-mode-container" data-string="settingsEnableDarkMode"><div class="field-label">Dark Mode</div></label>
+          <div class="setting-section dark-mode-grid" id="dark-mode-container">
+            <label class="dark-mode-card" for="dark-mode-never" onclick="selectDarkMode(this)"><input type="radio" name="darkMode" id="dark-mode-never" data-string="settingsDarkModeNever"/><span class="dark-mode-card-icon">☀️</span><span class="dark-mode-card-label">Never</span><span class="dm-dot"></span></label>
+            <label class="dark-mode-card" for="dark-mode-night" onclick="selectDarkMode(this)"><input type="radio" name="darkMode" id="dark-mode-night" data-string="settingsDarkModeNight"/><span class="dark-mode-card-icon">🌙</span><span class="dark-mode-card-label">At Night</span><span class="dm-dot"></span></label>
+            <label class="dark-mode-card" for="dark-mode-always" onclick="selectDarkMode(this)"><input type="radio" name="darkMode" id="dark-mode-always" data-string="settingsDarkModeAlways"/><span class="dark-mode-card-icon">🌑</span><span class="dark-mode-card-label">Always</span><span class="dm-dot"></span></label>
+            <label class="dark-mode-card active" for="dark-mode-system" onclick="selectDarkMode(this)"><input type="radio" name="darkMode" id="dark-mode-system" data-string="settingsDarkModeSystem" checked/><span class="dark-mode-card-icon">💻</span><span class="dark-mode-card-label">System</span><span class="dm-dot"></span></label>
+          </div>
+          <hr class="section-divider"/>
+          <div class="setting-section toggle-row" onclick="toggleSwitch('checkbox-site-theme')">
+            <div class="toggle-row-body"><div class="toggle-row-label-wrap"><label class="toggle-row-label" for="checkbox-site-theme" data-string="settingsSiteThemeToggle">Use site theme colors</label></div><div class="toggle-row-sub">Adapt the UI to match visited websites</div></div>
+            <button class="toggle-switch" id="ts-checkbox-site-theme" onclick="event.stopPropagation();toggleSwitch('checkbox-site-theme')"><input type="checkbox" id="checkbox-site-theme"/><div class="toggle-track"></div><div class="toggle-thumb"></div></button>
+          </div>
+          <div class="setting-section toggle-row" onclick="toggleSwitch('checkbox-show-divider')">
+            <div class="toggle-row-body"><div class="toggle-row-label-wrap"><label class="toggle-row-label" for="checkbox-show-divider" data-string="settingsShowDividerToggle">Show tab divider</label></div><div class="toggle-row-sub">Display a separator line between browser tabs</div></div>
+            <button class="toggle-switch" id="ts-checkbox-show-divider" onclick="event.stopPropagation();toggleSwitch('checkbox-show-divider')"><input type="checkbox" id="checkbox-show-divider"/><div class="toggle-track"></div><div class="toggle-thumb"></div></button>
+          </div>
+          <hr class="section-divider"/>
+          <div class="setting-section field-group">
+            <label for="setting-language-picker" data-string="settingsLanguageSelection"><div class="field-label">Language</div></label>
+            <div class="styled-select-wrap"><select id="setting-language-picker" class="styled-select"></select><span class="select-chevron"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADDITIONAL FEATURES -->
+      <div class="settings-container" id="additional-settings-container" data-section-id="additional"
+           style="--accent-grad:linear-gradient(135deg,#4f46e5,#7c3aed);--accent-glow:rgba(79,70,229,.3)">
+        <div class="section-accent-bar"></div>
+        <div class="section-header">
+          <div class="section-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+          <h3 data-string="settingsAdditionalFeaturesHeading">Additional Features</h3>
+        </div>
+        <div class="section-body">
+          <div class="setting-section field-group">
+            <label for="startupOptions" data-string="settingsStartupOptions"><div class="field-label">Startup Behavior</div></label>
+            <div class="styled-select-wrap"><select id="startup-options" name="startupOptions" class="styled-select"><option value="1" data-string="settingsStartupCreateTask">Create a new task</option><option value="2" data-string="settingsStartupNewTaskandBackground">New task + background tabs</option><option value="3" data-string="settingsStartupNewTaskOnly">New task only</option></select><span class="select-chevron"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></span></div>
+          </div>
+          <div class="setting-section field-group">
+            <label for="newWindowOptions" data-string="settingsNewWindowOptions"><div class="field-label">New Window Behavior</div></label>
+            <div class="styled-select-wrap"><select id="new-window-options" name="newWindowOptions" class="styled-select"><option value="1" data-string="settingsNewWindowCreateTask">Create a new task</option><option value="2" data-string="settingsNewWindowPickTask">Pick from existing tasks</option></select><span class="select-chevron"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></span></div>
+          </div>
+          <hr class="section-divider"/>
+          <div class="setting-section toggle-row" onclick="toggleSwitch('checkbox-userscripts')">
+            <div class="toggle-row-body"><div class="toggle-row-label-wrap"><label class="toggle-row-label" for="checkbox-userscripts" data-string="settingsUserscriptsToggle">Enable Userscripts</label><span class="toggle-badge">Advanced</span></div><div class="toggle-row-sub settings-info-subheading" data-string="settingsUserscriptsExplanation" data-allowHTML>Run custom JavaScript on web pages</div></div>
+            <button class="toggle-switch" id="ts-checkbox-userscripts" onclick="event.stopPropagation();toggleSwitch('checkbox-userscripts')"><input type="checkbox" id="checkbox-userscripts"/><div class="toggle-track"></div><div class="toggle-thumb"></div></button>
+          </div>
+          <div class="setting-secondary-label" id="userscripts-show-directory" hidden style="margin-top:-0.5em;margin-bottom:0.5em;padding-left:18px"><a data-string="settingsUserscriptShowDirectory">Show userscripts directory →</a></div>
+          <div class="setting-section toggle-row" id="section-separate-titlebar" onclick="toggleSwitch('checkbox-separate-titlebar')">
+            <div class="toggle-row-body"><div class="toggle-row-label-wrap"><label class="toggle-row-label" for="checkbox-separate-titlebar" data-string="settingsSeparateTitlebarToggle">Separate title bar</label></div><div class="toggle-row-sub">Show title bar separate from the browser chrome</div></div>
+            <button class="toggle-switch" id="ts-checkbox-separate-titlebar" onclick="event.stopPropagation();toggleSwitch('checkbox-separate-titlebar')"><input type="checkbox" id="checkbox-separate-titlebar"/><div class="toggle-track"></div><div class="toggle-thumb"></div></button>
+          </div>
+          <div class="setting-section toggle-row" id="section-open-tabs-in-foreground" onclick="toggleSwitch('checkbox-open-tabs-in-foreground')">
+            <div class="toggle-row-body"><div class="toggle-row-label-wrap"><label class="toggle-row-label" for="checkbox-open-tabs-in-foreground" data-string="settingsOpenTabsInForegroundToggle">Open new tabs in foreground</label></div><div class="toggle-row-sub">Switch to newly opened tabs automatically</div></div>
+            <button class="toggle-switch" id="ts-checkbox-open-tabs-in-foreground" onclick="event.stopPropagation();toggleSwitch('checkbox-open-tabs-in-foreground')"><input type="checkbox" id="checkbox-open-tabs-in-foreground"/><div class="toggle-track"></div><div class="toggle-thumb"></div></button>
+          </div>
+          <div class="setting-section" id="section-user-agent">
+            <div class="toggle-row" onclick="toggleSwitch('checkbox-user-agent')">
+              <div class="toggle-row-body"><div class="toggle-row-label-wrap"><label class="toggle-row-label" for="checkbox-user-agent" data-string="settingsUserAgentToggle">Custom user agent</label></div><div class="toggle-row-sub">Override the browser identification string</div></div>
+              <button class="toggle-switch" id="ts-checkbox-user-agent" onclick="event.stopPropagation();toggleSwitch('checkbox-user-agent')"><input type="checkbox" id="checkbox-user-agent"/><div class="toggle-track"></div><div class="toggle-thumb"></div></button>
+            </div>
+            <div style="padding:6px 18px 10px"><input type="text" id="input-user-agent" style="vertical-align:middle;margin-left:1em;width:375px;max-width:80vw;visibility:hidden" class="styled-input" placeholder="Mozilla/5.0 (custom)…"/></div>
+          </div>
+          <div class="setting-section toggle-row" onclick="toggleSwitch('checkbox-enable-autoplay')">
+            <div class="toggle-row-body"><div class="toggle-row-label-wrap"><label class="toggle-row-label" for="checkbox-enable-autoplay" data-string="settingsAutoplayToggle">Enable media autoplay</label></div><div class="toggle-row-sub">Allow media to start playing automatically</div></div>
+            <button class="toggle-switch" id="ts-checkbox-enable-autoplay" onclick="event.stopPropagation();toggleSwitch('checkbox-enable-autoplay')"><input type="checkbox" id="checkbox-enable-autoplay"/><div class="toggle-track"></div><div class="toggle-thumb"></div></button>
+          </div>
+          <div class="setting-section toggle-row" onclick="toggleSwitch('checkbox-update-notifications')">
+            <div class="toggle-row-body"><div class="toggle-row-label-wrap"><label class="toggle-row-label" for="checkbox-update-notifications" data-string="settingsUpdateNotificationsToggle">Update notifications</label></div><div class="toggle-row-sub">Get notified when a new version is available</div></div>
+            <button class="toggle-switch" id="ts-checkbox-update-notifications" onclick="event.stopPropagation();toggleSwitch('checkbox-update-notifications')"><input type="checkbox" id="checkbox-update-notifications"/><div class="toggle-track"></div><div class="toggle-thumb"></div></button>
+          </div>
+          <div class="setting-section toggle-row" onclick="toggleSwitch('checkbox-usage-statistics')">
+            <div class="toggle-row-body"><div class="toggle-row-label-wrap"><label class="toggle-row-label" for="checkbox-usage-statistics" data-string="settingsUsageStatisticsToggle" data-allowHTML>Share usage statistics</label></div><div class="toggle-row-sub">Help improve NextEngine with anonymous analytics</div></div>
+            <button class="toggle-switch" id="ts-checkbox-usage-statistics" onclick="event.stopPropagation();toggleSwitch('checkbox-usage-statistics')"><input type="checkbox" id="checkbox-usage-statistics"/><div class="toggle-track"></div><div class="toggle-thumb"></div></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEARCH ENGINE -->
+      <div class="settings-container" id="search-engine-settings-container" data-section-id="search"
+           style="--accent-grad:linear-gradient(135deg,#2563eb,#06b6d4);--accent-glow:rgba(37,99,235,.3)">
+        <div class="section-accent-bar"></div>
+        <div class="section-header">
+          <div class="section-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z"/></svg></div>
+          <h3 data-string="settingsSearchEngineHeading">Search Engine</h3>
+        </div>
+        <div class="section-body">
+          <div class="setting-section field-group">
+            <label for="defaultSearchEngine" data-string="settingsDefaultSearchEngine"><div class="field-label">Default Search Engine</div></label>
+            <div class="styled-select-wrap"><select id="default-search-engine" name="defaultSearchEngine" class="styled-select"></select><span class="select-chevron"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></span></div>
+            <input id="custom-search-engine" style="margin-left:0.5em;min-width:325px" hidden/>
+          </div>
+          <div class="settings-info-subheading info-hint" style="padding-top:0.4em" data-string="settingsDDGExplanation"><span class="info-hint-icon">💡</span><p><strong>DuckDuckGo</strong> is recommended for enhanced privacy. Search suggestions are sent to whichever engine you select.</p></div>
+        </div>
+      </div>
+
+      <!-- PASSWORD AUTOFILL -->
+      <div class="settings-container" id="password-autofill-container" data-section-id="password"
+           style="--accent-grad:linear-gradient(135deg,#059669,#14b8a6);--accent-glow:rgba(5,150,105,.3)">
+        <div class="section-accent-bar"></div>
+        <div class="section-header">
+          <div class="section-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/></svg></div>
+          <h3 data-string="settingsPasswordAutoFillHeadline">Password Autofill</h3>
+        </div>
+        <div class="section-body">
+          <div class="setting-section field-group">
+            <label for="selectedPasswordManagers" data-string="settingsSelectPasswordManager"><div class="field-label">Password Manager</div></label>
+            <div class="styled-select-wrap"><select id="selected-password-manager" name="selectedPasswordManager" class="styled-select"></select><span class="select-chevron"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></span></div>
+          </div>
+          <div class="setting-section" id="keychain-view-link" hidden><a data-string="keychainViewPasswords">View saved passwords in Keychain →</a></div>
+        </div>
+      </div>
+
+      <!-- PROXY -->
+      <div class="settings-container" id="proxy-settings-container" data-section-id="proxy"
+           style="--accent-grad:linear-gradient(135deg,#0284c7,#0ea5e9);--accent-glow:rgba(2,132,199,.3)">
+        <div class="section-accent-bar"></div>
+        <div class="section-header">
+          <div class="section-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg></div>
+          <h3 data-string="settingsProxyHeading">Proxy Settings</h3>
+        </div>
+        <div class="section-body">
+          <div class="setting-section field-group" id="proxy-type-container">
+            <div class="field-label">Connection Type</div>
+            <div class="styled-select-wrap"><select id="selected-proxy-type" class="styled-select"><option data-string="settingsNoProxy">No proxy</option><option data-string="settingsManualProxy">Manual proxy</option><option data-string="settingsAutomaticProxy">Automatic (PAC)</option></select><span class="select-chevron"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></span></div>
+          </div>
+          <div class="setting-section" id="manual-proxy-section">
+            <div class="setting-option field-group"><label for="proxy-rules-input" data-string="settingsProxyRules"><div class="field-label">Proxy Rules</div></label><input id="proxy-rules-input" type="text" name="proxyRules" placeholder="proxy.example.com:8080" class="styled-input"/></div>
+            <div class="setting-option field-group"><label for="proxy-bypass-rules-input" data-string="settingsProxyBypassRules"><div class="field-label">Bypass Rules</div></label><input name="proxyBypassRules" id="proxy-bypass-rules-input" placeholder="localhost, 127.0.0.1/8, ::1" class="styled-input"/></div>
+          </div>
+          <div class="setting-option field-group" id="pac-option"><label for="pac-url-input" data-string="settingsProxyConfigurationURL"><div class="field-label">PAC Configuration URL</div></label><input type="text" id="pac-url-input" placeholder="https://example.com/proxy.pac" class="styled-input"/></div>
+        </div>
+      </div>
+
+      <!-- KEYBOARD SHORTCUTS -->
+      <div class="settings-container" id="keymap-settings-container" data-section-id="keymap"
+           style="--accent-grad:linear-gradient(135deg,#d97706,#f59e0b);--accent-glow:rgba(217,119,6,.3)">
+        <div class="section-accent-bar"></div>
+        <div class="section-header">
+          <div class="section-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg></div>
+          <h3 data-string="settingsKeyboardShortcutsHeading">Keyboard Shortcuts</h3>
+        </div>
+        <div class="section-body">
+          <div class="settings-info-subheading shortcut-help" data-string="settingsKeyboardShortcutsHelp">Click any shortcut to customise it.</div>
+          <div class="setting-section">
+            <ul id="key-map-list" style="list-style:none;display:flex;flex-direction:column;gap:4px">
+              <li class="shortcut-row"><span class="shortcut-action">New Tab</span><kbd>⌘ T</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Close Tab</span><kbd>⌘ W</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">New Window</span><kbd>⌘ N</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Find in Page</span><kbd>⌘ F</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Developer Tools</span><kbd>⌘ ⌥ I</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Focus Address Bar</span><kbd>⌘ L</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Reload Page</span><kbd>⌘ R</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Hard Reload</span><kbd>⌘ ⇧ R</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Go Back</span><kbd>⌘ [</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Go Forward</span><kbd>⌘ ]</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Zoom In</span><kbd>⌘ +</kbd></li>
+              <li class="shortcut-row"><span class="shortcut-action">Zoom Out</span><kbd>⌘ −</kbd></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- CUSTOM BANGS -->
+      <div class="settings-container" id="custom-bangs-container" data-section-id="bangs"
+           style="--accent-grad:linear-gradient(135deg,#e11d48,#f43f5e);--accent-glow:rgba(225,29,72,.3)">
+        <div class="section-accent-bar"></div>
+        <div class="section-header">
+          <div class="section-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5"/></svg></div>
+          <h3 data-string="settingsCustomBangs">Custom Bangs</h3>
+        </div>
+        <div class="section-body">
+          <div class="setting-section" style="display:flex;flex-direction:column;gap:10px">
+            <ul id="custom-bangs" style="list-style:none;display:flex;flex-direction:column;gap:10px">
+              <li class="bang-row"><span class="bang-code">!yt</span><span class="bang-url">https://youtube.com/search?q=%s</span><button class="bang-del-btn" onclick="deleteBang(this)" aria-label="Delete"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></li>
+              <li class="bang-row"><span class="bang-code">!gh</span><span class="bang-url">https://github.com/search?q=%s</span><button class="bang-del-btn" onclick="deleteBang(this)" aria-label="Delete"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></li>
+              <li class="bang-row"><span class="bang-code">!mdn</span><span class="bang-url">https://developer.mozilla.org/search?q=%s</span><button class="bang-del-btn" onclick="deleteBang(this)" aria-label="Delete"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></li>
+              <li class="bang-row"><span class="bang-code">!r</span><span class="bang-url">https://reddit.com/search?q=%s</span><button class="bang-del-btn" onclick="deleteBang(this)" aria-label="Delete"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></li>
+            </ul>
+            <button class="add-bang-btn" id="add-custom-bang" data-string="settingsCustomBangsAdd" onclick="addBang()"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg><span style="position:relative;z-index:1">Add Bang</span></button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- RESTART BANNER -->
+  <div class="banner" id="restart-required-banner" role="alert" hidden>
+    <div class="banner-inner container">
+      <div class="banner-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg></div>
+      <span class="banner-text" data-string="settingsRestartRequired">A restart is required to apply your changes.</span>
+      <button class="banner-btn-primary">Restart Now</button>
+      <button class="banner-btn-secondary">Later</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ORIGINAL SCRIPTS (preserved) -->
+<script src="../../js/util/keyMap.js"></script>
+<script src="../../js/util/settings/settingsContent.js"></script>
+<script src="../../js/util/searchEngine.js"></script>
+<script src="../../js/util/theme.js"></script>
+<script src="../../js/util/passwordManager.js"></script>
+<script src="../../dist/localization.build.js"></script>
+<script src="settings.js"></script>
+
+<script>
+/* ── NAVIGATION ── */
+var navBtns=document.querySelectorAll('.nav-btn');
+var sections=document.querySelectorAll('.settings-container');
+
+function showSection(id){
+  sections.forEach(function(s){s.classList.remove('visible','section-animate')});
+  navBtns.forEach(function(b){b.classList.remove('active');var d=b.querySelector('.nav-btn-dot');if(d)d.style.display='none'});
+  var t=document.querySelector('.settings-container[data-section-id="'+id+'"]');
+  if(t){t.classList.add('visible');requestAnimationFrame(function(){t.classList.add('section-animate')})}
+  var ab=document.querySelector('.nav-btn[data-section="'+id+'"]');
+  if(ab){ab.classList.add('active');var d=ab.querySelector('.nav-btn-dot');if(d)d.style.display='block'}
+  closeMobileSidebar();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+navBtns.forEach(function(b){b.addEventListener('click',function(){var s=b.getAttribute('data-section');if(s)showSection(s)})});
+navBtns.forEach(function(b){var d=b.querySelector('.nav-btn-dot');if(d&&!b.classList.contains('active'))d.style.display='none'});
+
+/* ── MOBILE ── */
+var hamburger=document.getElementById('hamburger-btn');
+var sidebar=document.getElementById('sidebar');
+var overlay=document.getElementById('mobile-overlay');
+function closeMobileSidebar(){sidebar.classList.remove('open');overlay.classList.remove('open')}
+hamburger.addEventListener('click',function(){sidebar.classList.toggle('open');overlay.classList.toggle('open')});
+overlay.addEventListener('click',closeMobileSidebar);
+
+/* ── TOGGLES ── */
+function toggleSwitch(id){
+  var cb=document.getElementById(id);if(!cb)return;
+  cb.checked=!cb.checked;
+  var btn=document.getElementById('ts-'+id);
+  if(btn){cb.checked?btn.classList.add('on'):btn.classList.remove('on')}
+  cb.dispatchEvent(new Event('change',{bubbles:true}));
+}
+
+/* ── RADIO CARDS ── */
+function selectRadioCard(label,name){
+  document.querySelectorAll('.radio-card').forEach(function(c){if(c.querySelector('input[name="'+name+'"]'))c.classList.remove('active')});
+  label.classList.add('active');
+  var r=label.querySelector('input[type="radio"]');
+  if(r){r.checked=true;r.dispatchEvent(new Event('change',{bubbles:true}))}
+}
+
+/* ── DARK MODE ── */
+function selectDarkMode(label){
+  document.querySelectorAll('.dark-mode-card').forEach(function(c){c.classList.remove('active')});
+  label.classList.add('active');
+  var r=label.querySelector('input[type="radio"]');
+  if(r){r.checked=true;r.dispatchEvent(new Event('change',{bubbles:true}))}
+}
+
+/* ── BANGS ── */
+function deleteBang(btn){
+  var li=btn.closest('li');
+  if(li){li.style.opacity='0';li.style.transform='translateX(20px)';li.style.transition='all .25s';setTimeout(function(){li.remove()},220)}
+}
+function addBang(){
+  var list=document.getElementById('custom-bangs');
+  var li=document.createElement('li');li.className='bang-row';
+  li.style.animation='sectionIn .35s cubic-bezier(.22,1,.36,1) both';
+  li.innerHTML='<span class="bang-code">!new</span><span class="bang-url">https://example.com/search?q=%s</span><button class="bang-del-btn" onclick="deleteBang(this)" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="#fb7185" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>';
+  list.appendChild(li);
+}
+</script>
+</body>
+</html>

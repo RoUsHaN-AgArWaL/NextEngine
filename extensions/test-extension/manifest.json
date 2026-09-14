@@ -1,0 +1,10 @@
+{
+  "name": "YouTube Test",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "matches": ["youtube.com"],
+      "js": ["content.js"]
+    }
+  ]
+}

@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NextEngine — Uninstall</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red-neon: #ff2244;
+      --red-dim: #cc1133;
+      --red-glow: rgba(255,34,68,0.35);
+      --red-soft: rgba(255,34,68,0.12);
+      --charcoal: #0d0d0f;
+      --deep: #080809;
+      --surface: rgba(255,255,255,0.035);
+      --surface2: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.07);
+      --border-red: rgba(255,34,68,0.25);
+      --text-primary: #f0f0f2;
+      --text-secondary: #7a7a88;
+      --text-muted: #44444f;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      background: var(--deep);
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* === NOISE TEXTURE OVERLAY === */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 1000;
+      pointer-events: none;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+    }
+
+    .app-root {
+      position: relative;
+      width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 50%, rgba(255,20,50,0.055) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(20,10,30,0.8) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, #0a0a0c 0%, #060607 100%);
+    }
+
+    /* === AMBIENT GLOW BLOBS === */
+    .glow-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-blob-1 {
+      width: 420px; height: 300px;
+      background: radial-gradient(circle, rgba(255,22,55,0.18) 0%, transparent 70%);
+      top: 10%; left: 5%;
+    }
+    .glow-blob-2 {
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(255,22,55,0.08) 0%, transparent 70%);
+      bottom: 15%; left: 25%;
+    }
+    .glow-blob-3 {
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(120,40,200,0.06) 0%, transparent 70%);
+      top: 20%; right: 15%;
+    }
+
+    /* ============================= */
+    /* === MAIN WINDOW CONTAINER === */
+    /* ============================= */
+    .window-container {
+      position: relative; z-index: 10;
+      width: 960px; height: 560px;
+      display: flex;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 0 80px rgba(255,22,55,0.12),
+        0 40px 120px rgba(0,0,0,0.9),
+        0 80px 200px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      animation: windowEntry 0.8s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes windowEntry {
+      from { opacity: 0; transform: scale(0.94) translateY(18px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* ========================= */
+    /* === LEFT: BROWSER PANE === */
+    /* ========================= */
+    .browser-pane {
+      position: relative;
+      width: 52%;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, #0c0c10 0%, #0a0a0d 100%);
+    }
+
+    /* blurred browser content overlay */
+    .browser-pane::after {
+      content: '';
+      position: absolute; inset: 0;
+      backdrop-filter: blur(3px);
+      background:
+        linear-gradient(to right, transparent 60%, rgba(10,10,12,0.85) 100%),
+        linear-gradient(135deg, rgba(255,22,55,0.04) 0%, transparent 60%);
+      z-index: 5;
+    }
+
+    /* browser chrome bar */
+    .browser-chrome {
+      position: relative; z-index: 3;
+      height: 42px;
+      background: rgba(15,15,18,0.95);
+      border-bottom: 1px solid rgba(255,34,68,0.15);
+      display: flex; align-items: center;
+      padding: 0 14px; gap: 8px;
+    }
+
+    .chrome-dots {
+      display: flex; gap: 6px; margin-right: 6px;
+    }
+    .chrome-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .dot-red   { background: #ff2244; box-shadow: 0 0 8px rgba(255,34,68,0.8); }
+    .dot-amber { background: #ff8800; box-shadow: 0 0 6px rgba(255,136,0,0.5); }
+    .dot-green { background: #00cc66; box-shadow: 0 0 6px rgba(0,204,102,0.4); }
+
+    .chrome-addressbar {
+      flex: 1;
+      height: 24px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,34,68,0.2);
+      border-radius: 6px;
+      display: flex; align-items: center;
+      padding: 0 10px; gap: 6px;
+    }
+    .chrome-addressbar-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--red-neon);
+      box-shadow: 0 0 6px var(--red-neon);
+      flex-shrink: 0;
+    }
+    .chrome-addressbar-text {
+      font-size: 10px; font-weight: 500;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.02em;
+    }
+
+    /* Browser viewport */
+    .browser-viewport {
+      position: relative; z-index: 2;
+      width: 100%; height: calc(100% - 42px);
+      overflow: hidden;
+    }
+
+    /* Neon grid background */
+    .neon-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,34,68,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,34,68,0.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(ellipse 100% 100% at 40% 50%, black 20%, transparent 75%);
+    }
+
+    /* Neon pipes */
+    .neon-pipes {
+      position: absolute; inset: 0;
+      overflow: hidden;
+    }
+
+    .pipe {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, var(--red-neon), transparent);
+      border-radius: 2px;
+      animation: pipeFlow 4s ease-in-out infinite;
+    }
+    .pipe-v {
+      background: linear-gradient(180deg, transparent, var(--red-neon), transparent);
+    }
+
+    @keyframes pipeFlow {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.55; }
+    }
+
+    /* Fake browser cards */
+    .browser-cards {
+      position: absolute; inset: 0;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      z-index: 3;
+      filter: blur(1.5px);
+      opacity: 0.6;
+    }
+
+    .browser-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,34,68,0.15);
+      border-radius: 10px;
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .browser-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,34,68,0.6), transparent);
+    }
+    .card-line {
+      height: 6px; border-radius: 3px;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 6px;
+    }
+    .card-line.accent { background: rgba(255,34,68,0.3); width: 60%; }
+    .card-line.short  { width: 70%; }
+    .card-line.xshort { width: 40%; }
+
+    .browser-card-tall {
+      grid-column: span 2;
+      height: 60px;
+    }
+
+    /* Sidebar tabs */
+    .browser-sidebar {
+      position: absolute; left: 0; top: 42px; bottom: 0;
+      width: 44px;
+      background: rgba(10,10,12,0.9);
+      border-right: 1px solid rgba(255,34,68,0.12);
+      z-index: 4;
+      display: flex; flex-direction: column;
+      align-items: center; padding: 10px 0; gap: 8px;
+    }
+
+    .sidebar-icon {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sidebar-icon.active {
+      background: rgba(255,34,68,0.15);
+      border-color: rgba(255,34,68,0.4);
+      box-shadow: 0 0 12px rgba(255,34,68,0.2);
+    }
+    .sidebar-icon svg { width: 13px; height: 13px; }
+
+    /* Red glow orb in browser */
+    .browser-glow-orb {
+      position: absolute;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,22,55,0.25) 0%, transparent 70%);
+      filter: blur(30px);
+      top: 30%; left: 20%;
+      z-index: 2;
+      animation: orbPulse 3s ease-in-out infinite;
+    }
+    @keyframes orbPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Scanlines */
+    .scanlines {
+      position: absolute; inset: 0; z-index: 6;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* ========================== */
+    /* === RIGHT: DIALOG PANE === */
+    /* ========================== */
+    .dialog-pane {
+      position: relative;
+      width: 48%;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.02) 100%);
+      backdrop-filter: blur(40px) saturate(1.2);
+      -webkit-backdrop-filter: blur(40px) saturate(1.2);
+      border-left: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column;
+      padding: 36px 36px 32px 36px;
+      overflow: hidden;
+    }
+
+    /* Glass inner glow */
+    .dialog-pane::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,34,68,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(255,34,68,0.04) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Top-right decorative accent line */
+    .dialog-pane::after {
+      content: '';
+      position: absolute; top: 0; left: 60px; right: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,34,68,0.4), rgba(255,255,255,0.15), rgba(255,34,68,0.4), transparent);
+      z-index: 1;
+    }
+
+    .dialog-content { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; }
+
+    /* Close button */
+    .btn-close {
+      position: absolute; top: 0; right: 0;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    .btn-close:hover {
+      background: rgba(255,34,68,0.15);
+      border-color: rgba(255,34,68,0.4);
+      box-shadow: 0 0 14px rgba(255,34,68,0.2);
+    }
+    .btn-close svg { width: 12px; height: 12px; color: rgba(255,255,255,0.5); }
+    .btn-close:hover svg { color: var(--red-neon); }
+
+    /* Logo area */
+    .dialog-logo {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .logo-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1a0a10 0%, #0d0508 100%);
+      border: 1px solid rgba(255,34,68,0.3);
+      box-shadow: 0 0 20px rgba(255,34,68,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-wordmark {
+      display: flex; flex-direction: column; gap: 1px;
+    }
+    .logo-name {
+      font-size: 13px; font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .logo-sub {
+      font-size: 9px; font-weight: 500;
+      color: rgba(255,34,68,0.7);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    /* Divider */
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, rgba(255,34,68,0.3), rgba(255,255,255,0.06), transparent);
+      margin-bottom: 26px;
+    }
+
+    /* Main title */
+    .dialog-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .dialog-title span {
+      color: rgba(255,255,255,0.45);
+      font-weight: 400;
+    }
+
+    /* Warning badge */
+    .warning-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,34,68,0.08);
+      border: 1px solid rgba(255,34,68,0.2);
+      border-radius: 6px;
+      padding: 5px 10px;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+    .warning-badge-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--red-neon);
+      box-shadow: 0 0 6px var(--red-neon);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .warning-badge-text {
+      font-size: 9.5px; font-weight: 600;
+      color: var(--red-neon);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* Error message box */
+    .error-box {
+      background: rgba(255,34,68,0.07);
+      border: 1px solid rgba(255,34,68,0.22);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      position: relative;
+      /* overflow: hidden; */
+    }
+    .error-box::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--red-neon), rgba(255,34,68,0.3));
+      border-radius: 0 2px 2px 0;
+    }
+    .error-icon-row {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .error-icon {
+      width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;
+    }
+    .error-text {
+      font-size: 12px; font-weight: 400; line-height: 1.65;
+      color: rgba(255,70,90,0.9);
+      letter-spacing: 0.01em;
+    }
+    .error-text strong {
+      font-weight: 600; color: #ff4466;
+    }
+
+    /* Info rows */
+    .info-rows {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 26px;
+    }
+    .info-row {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .info-row-icon {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .info-row-icon svg { width: 12px; height: 12px; }
+    .info-row-text { font-size: 11.5px; color: var(--text-secondary); font-weight: 400; }
+    .info-row-text strong { color: rgba(255,255,255,0.5); font-weight: 500; }
+
+    /* Spacer */
+    .flex-grow { flex: 1; }
+
+    /* Version info row */
+    .version-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 20px;
+    }
+    .version-tag {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+      padding: 3px 7px;
+    }
+    .version-dot {
+      width: 3px; height: 3px; border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+    }
+    .version-text { font-size: 9px; color: rgba(255,255,255,0.18); letter-spacing: 0.05em; }
+
+    /* Action buttons */
+    .btn-row {
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      height: 42px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      font-family: inherit; font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative; overflow: hidden;
+    }
+    .btn-cancel:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.65);
+    }
+
+    .btn-uninstall {
+      flex: 1.6;
+      height: 42px;
+      background: linear-gradient(135deg, #cc1133 0%, #ff2244 40%, #cc1133 100%);
+      border: none;
+      border-radius: 10px;
+      font-family: inherit; font-size: 13px; font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: all 0.25s ease;
+      box-shadow:
+        0 0 0 1px rgba(255,34,68,0.5),
+        0 4px 24px rgba(255,22,55,0.45),
+        0 8px 40px rgba(255,22,55,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+    .btn-uninstall::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%);
+      border-radius: inherit;
+    }
+    .btn-uninstall::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+      transition: left 0.5s ease;
+    }
+    .btn-uninstall:hover::after { left: 150%; }
+    .btn-uninstall:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(255,34,68,0.7),
+        0 6px 30px rgba(255,22,55,0.6),
+        0 12px 50px rgba(255,22,55,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .btn-uninstall:active { transform: translateY(0px); }
+
+    .btn-uninstall-inner {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      position: relative; z-index: 1;
+    }
+
+    /* Progress bar (hidden initially) */
+    .progress-wrap {
+      display: none;
+      margin-top: 12px;
+    }
+    .progress-track {
+      width: 100%; height: 3px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #cc1133, #ff2244);
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(255,34,68,0.6);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+    .progress-label {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 6px;
+    }
+    .progress-status { font-size: 10px; color: rgba(255,34,68,0.7); font-weight: 500; letter-spacing: 0.05em; }
+    .progress-pct    { font-size: 10px; color: rgba(255,255,255,0.25); font-weight: 600; }
+
+    /* Modal overlay */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      background: linear-gradient(145deg, rgba(22,14,16,0.97), rgba(14,10,12,0.98));
+      border: 1px solid rgba(255,34,68,0.25);
+      border-radius: 16px;
+      padding: 32px 28px 24px;
+      width: 340px;
+      box-shadow: 0 0 60px rgba(255,22,55,0.2), 0 30px 80px rgba(0,0,0,0.8);
+      text-align: center;
+      animation: modalIn 0.3s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.88) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-icon { margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(255,34,68,0.1); border: 1px solid rgba(255,34,68,0.25);
+    }
+    .modal-title { font-size: 17px; font-weight: 700; color: #f0f0f2; margin-bottom: 8px; }
+    .modal-desc  { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.6; margin-bottom: 22px; }
+    .modal-btns  { display: flex; gap: 10px; }
+    .modal-cancel {
+      flex:1; height: 38px; border-radius: 8px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+      font-family: inherit; font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.4); cursor: pointer; letter-spacing: 0.04em;
+      transition: all 0.2s;
+    }
+    .modal-cancel:hover { background: rgba(255,255,255,0.09); color: rgba(255,255,255,0.6); }
+    .modal-confirm {
+      flex:1.2; height: 38px; border-radius: 8px;
+      background: linear-gradient(135deg, #cc1133, #ff2244);
+      border: none; font-family: inherit; font-size: 12px; font-weight: 700;
+      color: #fff; cursor: pointer; letter-spacing: 0.1em;
+      box-shadow: 0 4px 18px rgba(255,22,55,0.4);
+      transition: all 0.2s;
+    }
+    .modal-confirm:hover { box-shadow: 0 6px 24px rgba(255,22,55,0.6); transform: translateY(-1px); }
+
+    /* Window titlebar (top strip shared) */
+    .titlebar {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 0; /* handled inside panes */
+    }
+
+    /* Decoration corner accents */
+    .corner-accent {
+      position: absolute;
+      width: 12px; height: 12px;
+      pointer-events: none;
+      z-index: 20;
+    }
+    .corner-accent.tl { top: 0; left: 0; border-top: 1px solid rgba(255,34,68,0.5); border-left: 1px solid rgba(255,34,68,0.5); border-radius: 20px 0 0 0; }
+    .corner-accent.tr { top: 0; right: 0; border-top: 1px solid rgba(255,34,68,0.5); border-right: 1px solid rgba(255,34,68,0.5); border-radius: 0 20px 0 0; }
+    .corner-accent.bl { bottom: 0; left: 0; border-bottom: 1px solid rgba(255,34,68,0.3); border-left: 1px solid rgba(255,34,68,0.3); border-radius: 0 0 0 20px; }
+    .corner-accent.br { bottom: 0; right: 0; border-bottom: 1px solid rgba(255,34,68,0.3); border-right: 1px solid rgba(255,34,68,0.3); border-radius: 0 0 20px 0; }
+  </style>
+</head>
+<body>
+
+<div class="app-root">
+  <!-- Ambient glow blobs -->
+  <div class="glow-blob glow-blob-1"></div>
+  <div class="glow-blob glow-blob-2"></div>
+  <div class="glow-blob glow-blob-3"></div>
+
+  <!-- Main window -->
+  <div class="window-container">
+    <!-- Corner accents -->
+    <div class="corner-accent tl"></div>
+    <div class="corner-accent tr"></div>
+    <div class="corner-accent bl"></div>
+    <div class="corner-accent br"></div>
+
+    <!-- ===== LEFT: BROWSER PANE ===== -->
+    <div class="browser-pane">
+      <!-- Browser chrome -->
+      <div class="browser-chrome">
+        <div class="chrome-dots">
+          <div class="chrome-dot dot-red"></div>
+          <div class="chrome-dot dot-amber"></div>
+          <div class="chrome-dot dot-green"></div>
+        </div>
+        <!-- Nav arrows -->
+        <svg width="22" height="10" viewBox="0 0 22 10" fill="none" style="opacity:.25">
+          <path d="M3 5H1M1 5L3.5 2.5M1 5L3.5 7.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M7 5H9M9 5L6.5 2.5M9 5L6.5 7.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <div class="chrome-addressbar">
+          <div class="chrome-addressbar-dot"></div>
+          <span class="chrome-addressbar-text">nextengine://newtab — Quantum Dashboard</span>
+        </div>
+        <!-- Menu dots -->
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="opacity:.3">
+          <circle cx="2" cy="7" r="1.2" fill="#fff"/>
+          <circle cx="7" cy="7" r="1.2" fill="#fff"/>
+          <circle cx="12" cy="7" r="1.2" fill="#fff"/>
+        </svg>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="browser-sidebar">
+        <div class="sidebar-icon active">
+          <svg viewBox="0 0 14 14" fill="none" stroke="rgba(255,34,68,0.8)" stroke-width="1.4" stroke-linecap="round">
+            <rect x="1.5" y="1.5" width="5" height="5" rx="1.2"/>
+            <rect x="7.5" y="1.5" width="5" height="5" rx="1.2"/>
+            <rect x="1.5" y="7.5" width="5" height="5" rx="1.2"/>
+            <rect x="7.5" y="7.5" width="5" height="5" rx="1.2"/>
+          </svg>
+        </div>
+        <div class="sidebar-icon">
+          <svg viewBox="0 0 14 14" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.4" stroke-linecap="round">
+            <path d="M7 2L7 12M2 7L12 7"/>
+          </svg>
+        </div>
+        <div class="sidebar-icon">
+          <svg viewBox="0 0 14 14" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.4" stroke-linecap="round">
+            <path d="M2 4h10M2 7h7M2 10h9"/>
+          </svg>
+        </div>
+        <div class="sidebar-icon">
+          <svg viewBox="0 0 14 14" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.4" stroke-linecap="round">
+            <circle cx="7" cy="7" r="4.5"/>
+            <path d="M7 4.5v2.8l1.8 1.8"/>
+          </svg>
+        </div>
+        <div style="flex:1"></div>
+        <div class="sidebar-icon">
+          <svg viewBox="0 0 14 14" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.4" stroke-linecap="round">
+            <circle cx="7" cy="5" r="2.2"/>
+            <path d="M2 12c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Viewport -->
+      <div class="browser-viewport">
+        <div class="neon-grid"></div>
+
+        <!-- Glow orb -->
+        <div class="browser-glow-orb"></div>
+
+        <!-- Neon pipes -->
+        <div class="neon-pipes">
+          <!-- Horizontal pipes -->
+          <div class="pipe" style="left:44px;top:60px;width:140px;height:1px;animation-delay:0s;"></div>
+          <div class="pipe" style="left:44px;top:120px;width:100px;height:1px;animation-delay:0.8s;box-shadow:0 0 6px rgba(255,34,68,0.4)"></div>
+          <div class="pipe" style="left:44px;top:200px;width:160px;height:1px;animation-delay:1.6s;"></div>
+          <div class="pipe" style="left:44px;top:290px;width:80px;height:1px;animation-delay:0.4s;"></div>
+          <div class="pipe" style="left:44px;top:370px;width:120px;height:1px;animation-delay:1.2s;"></div>
+          <!-- Vertical pipes -->
+          <div class="pipe pipe-v" style="left:80px;top:60px;width:1px;height:60px;animation-delay:0.5s;box-shadow:0 0 6px rgba(255,34,68,0.4)"></div>
+          <div class="pipe pipe-v" style="left:160px;top:120px;width:1px;height:80px;animation-delay:1.0s;"></div>
+          <div class="pipe pipe-v" style="left:120px;top:200px;width:1px;height:90px;animation-delay:0.2s;"></div>
+          <div class="pipe pipe-v" style="left:200px;top:290px;width:1px;height:80px;animation-delay:1.4s;"></div>
+          <!-- Glowing nodes -->
+          <div style="position:absolute;left:79px;top:59px;width:4px;height:4px;border-radius:50%;background:#ff2244;box-shadow:0 0 10px #ff2244,0 0 20px rgba(255,34,68,0.5);z-index:5;"></div>
+          <div style="position:absolute;left:159px;top:119px;width:3px;height:3px;border-radius:50%;background:#ff2244;box-shadow:0 0 8px #ff2244;z-index:5;"></div>
+          <div style="position:absolute;left:119px;top:199px;width:5px;height:5px;border-radius:50%;background:#ff2244;box-shadow:0 0 14px #ff2244,0 0 28px rgba(255,34,68,0.4);z-index:5;animation:orbPulse 2s ease-in-out infinite;"></div>
+          <div style="position:absolute;left:199px;top:289px;width:3px;height:3px;border-radius:50%;background:#ff2244;box-shadow:0 0 8px #ff2244;z-index:5;"></div>
+        </div>
+
+        <!-- Browser cards (blurred content) -->
+        <div class="browser-cards" style="left:44px;">
+          <div class="browser-card">
+            <div class="card-line accent"></div>
+            <div class="card-line short"></div>
+            <div class="card-line xshort"></div>
+          </div>
+          <div class="browser-card">
+            <div class="card-line"></div>
+            <div class="card-line accent" style="width:45%"></div>
+            <div class="card-line xshort"></div>
+          </div>
+          <div class="browser-card browser-card-tall">
+            <div class="card-line accent" style="width:80%"></div>
+            <div class="card-line" style="width:90%"></div>
+            <div class="card-line short"></div>
+          </div>
+          <div class="browser-card" style="grid-column:1;height:50px;">
+            <div class="card-line xshort"></div>
+            <div class="card-line" style="width:80%"></div>
+          </div>
+          <div class="browser-card" style="grid-column:2;height:50px;">
+            <div class="card-line accent" style="width:55%"></div>
+            <div class="card-line short"></div>
+          </div>
+        </div>
+
+        <!-- Scanlines -->
+        <div class="scanlines"></div>
+      </div>
+    </div>
+
+    <!-- ===== RIGHT: DIALOG PANE ===== -->
+    <div class="dialog-pane">
+      <div class="dialog-content">
+
+        <!-- Close button -->
+        <button class="btn-close" id="btnClose" title="Close">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M1 1l10 10M11 1L1 11"/>
+          </svg>
+        </button>
+
+        <!-- Logo -->
+        <div class="dialog-logo">
+          <div class="logo-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2C5.6 2 2 5.6 2 10s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z" stroke="rgba(255,34,68,0.8)" stroke-width="1.4"/>
+              <path d="M10 5l3.5 6H6.5L10 5z" fill="rgba(255,34,68,0.7)" stroke="rgba(255,34,68,0.9)" stroke-width="0.8" stroke-linejoin="round"/>
+              <circle cx="10" cy="10" r="1.5" fill="#ff2244"/>
+              <path d="M5.5 13.5 Q10 8 14.5 13.5" stroke="rgba(255,34,68,0.5)" stroke-width="1" fill="none"/>
+            </svg>
+          </div>
+          <div class="logo-wordmark">
+            <div class="logo-name">NextEngine</div>
+            <div class="logo-sub">Quantum Browser</div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Warning badge -->
+        <div class="warning-badge">
+          <div class="warning-badge-dot"></div>
+          <span class="warning-badge-text">Uninstall Process Active</span>
+        </div>
+
+        <!-- Title -->
+        <div class="dialog-title">
+          NextEngine<br/>
+          <span>uninstall process</span>
+        </div>
+
+        <!-- Spacer -->
+        <div style="height:16px;"></div>
+
+        <!-- Error box -->
+        <div class="error-box">
+          <div class="error-icon-row">
+            <svg class="error-icon" viewBox="0 0 18 18" fill="none">
+              <path d="M9 1L16.8 15H1.2L9 1z" fill="rgba(255,34,68,0.15)" stroke="rgba(255,34,68,0.7)" stroke-width="1.3" stroke-linejoin="round"/>
+              <path d="M9 7v3.5" stroke="#ff4466" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="9" cy="13" r="0.9" fill="#ff4466"/>
+            </svg>
+            <p class="error-text">
+              <strong>uninstalling NextEngine.exe.</strong> Please make sure the browser is not running and try again.
+            </p>
+          </div>
+        </div>
+
+        <!-- Info rows -->
+        <div class="info-rows">
+          <div class="info-row">
+            <div class="info-row-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.3" stroke-linecap="round">
+                <path d="M6 1v5l3 1.5"/>
+                <circle cx="6" cy="6" r="5"/>
+              </svg>
+            </div>
+            <span class="info-row-text">All browser data and settings will be <strong>permanently removed</strong></span>
+          </div>
+          <div class="info-row">
+            <div class="info-row-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.3" stroke-linecap="round">
+                <path d="M2 3h8M4 3V2h4v1M3 3l.5 7h5l.5-7"/>
+              </svg>
+            </div>
+            <span class="info-row-text">This action <strong>cannot be undone</strong> after confirmation</span>
+          </div>
+          <div class="info-row">
+            <div class="info-row-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.3" stroke-linecap="round">
+                <rect x="1.5" y="2.5" width="9" height="7" rx="1.2"/>
+                <path d="M4 2.5V1.5h4v1"/>
+              </svg>
+            </div>
+            <span class="info-row-text">Close all <strong>NextEngine</strong> windows before proceeding</span>
+          </div>
+        </div>
+
+        <div class="flex-grow"></div>
+
+        <!-- Version row -->
+        <div class="version-row">
+          <span class="version-tag">v4.2.1</span>
+          <div class="version-dot"></div>
+          <span class="version-text">Build 2024.12.11</span>
+          <div class="version-dot"></div>
+          <span class="version-text">x64 · Quantum Core</span>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-wrap" id="progressWrap">
+          <div class="progress-track">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+          <div class="progress-label">
+            <span class="progress-status" id="progressStatus">Removing files...</span>
+            <span class="progress-pct" id="progressPct">0%</span>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="btn-row" id="btnRow">
+          <button class="btn-cancel" id="btnCancel">Cancel</button>
+          <button class="btn-uninstall" id="btnUninstall">
+            <div class="btn-uninstall-inner">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round">
+                <path d="M3 4h8M5.5 4V3h3v1M4 4l.5 7h5L10 4"/>
+              </svg>
+              <span>UNINSTALL</span>
+            </div>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-icon">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M11 2L20.5 19H1.5L11 2z" fill="rgba(255,34,68,0.18)" stroke="rgba(255,34,68,0.8)" stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M11 9v4.5" stroke="#ff4466" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="11" cy="16.5" r="1.1" fill="#ff4466"/>
+      </svg>
+    </div>
+    <div class="modal-title">Confirm Uninstall</div>
+    <div class="modal-desc">Are you sure you want to completely remove <strong style="color:rgba(255,255,255,0.6)">NextEngine</strong> and all associated data? This cannot be undone.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" id="modalCancel">Cancel</button>
+      <button class="modal-confirm" id="modalConfirm">CONFIRM</button>
+    </div>
+  </div>
+</div>
+<script>
+  const { ipcRenderer } = require('electron');
+</script>
+
+
+<script>
+  
+  const btnUninstall = document.getElementById('btnUninstall');
+  const btnCancel    = document.getElementById('btnCancel');
+  const btnClose     = document.getElementById('btnClose');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalCancel  = document.getElementById('modalCancel');
+  const modalConfirm = document.getElementById('modalConfirm');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar  = document.getElementById('progressBar');
+  const progressPct  = document.getElementById('progressPct');
+  const progressStatus = document.getElementById('progressStatus');
+  const btnRow       = document.getElementById('btnRow');
+
+  btnUninstall.addEventListener('click', () => {
+    modalOverlay.classList.add('active');
+  });
+[btnCancel, btnClose, modalCancel].forEach(btn => {
+  btn.addEventListener('click', () => {
+    ipcRenderer.send('close-uninstall-window');
+  });
+});
+
+
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+  });
+
+  const statusMessages = [
+    'Terminating processes...',
+    'Removing registry entries...',
+    'Deleting application files...',
+    'Cleaning user data...',
+    'Removing shortcuts...',
+    'Finalizing removal...',
+    'Uninstall complete.'
+  ];
+
+  modalConfirm.addEventListener('click', () => {
+  modalOverlay.classList.remove('active');
+  btnRow.style.display = 'none';
+  progressWrap.style.display = 'block';
+
+  let pct = 0;
+  let statusIdx = 0;
+
+  const interval = setInterval(() => {
+    pct += Math.random() * 3 + 1;
+    if (pct > 100) pct = 100;
+
+    progressBar.style.width = pct + '%';
+    progressPct.textContent = Math.floor(pct) + '%';
+
+    const newIdx = Math.min(
+      Math.floor((pct / 100) * statusMessages.length),
+      statusMessages.length - 1
+    );
+
+    if (newIdx !== statusIdx) {
+      statusIdx = newIdx;
+      progressStatus.textContent = statusMessages[statusIdx];
+    }
+
+    if (pct >= 100) {
+      clearInterval(interval);
+
+      progressStatus.textContent = 'Uninstall complete.';
+      progressStatus.style.color = 'rgba(80,220,120,0.85)';
+      progressBar.style.background =
+        'linear-gradient(90deg, #007744, #00cc66)';
+
+      // ✅ notify Electron
+      if (ipcRenderer) {
+        ipcRenderer.send('uninstall-complete');
+      }
+
+      // ✅ auto close window
+     setTimeout(() => {
+  ipcRenderer.send('uninstall-complete');
+}, 1500);
+
+    }
+  }, 60);
+});
+
+</script>
+</body>
+</html>

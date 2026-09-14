@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#070711" />
+  <title>NextEngine — The browser that thinks ahead</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="image-upgrade.css" />
+  <link rel="stylesheet" href="tabs-upgrade.css" />
+</head>
+<body>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="NextEngine home"><span class="brand-mark"><i></i><i></i><i></i></span><span>NEXT<span class="brand-muted">ENGINE</span></span></a>
+    <nav class="top-nav" aria-label="Primary navigation">
+      <a href="#intelligence">Intelligence</a><a href="#control">Control</a><a href="#ai">NextEngine AI</a>
+    </nav>
+    <button class="header-cta" data-scroll="#ai">Explore AI <span>↗</span></button>
+  </header>
+
+  <aside class="progress-rail" aria-label="Page sections">
+    <span class="rail-label">SCROLL TO EXPLORE</span>
+    <div class="rail-line"><i></i></div>
+    <div class="rail-count"><b id="railCurrent">01</b><span>/</span><em>06</em></div>
+  </aside>
+
+  <main id="top">
+    <section class="hero section-reveal" data-index="01">
+      <div class="hero-orbit orbit-a"></div><div class="hero-orbit orbit-b"></div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse-dot"></span> A NEW KIND OF BROWSER</p>
+        <h1>THE WEB,<br><span>REENGINEERED.</span></h1>
+        <p class="hero-sub">The browser that thinks ahead.<br><small>Browse faster. Think deeper. Control everything.</small></p>
+        <button class="hero-action" data-scroll="#intelligence">Begin the tour <span>↓</span></button>
+      </div>
+      <div class="hero-console glass-panel">
+        <div class="console-top"><span class="window-dots"><i></i><i></i><i></i></span><span>nextengine://new-tab</span><span class="console-status">● LIVE</span></div>
+        <div class="console-body">
+          <div class="search-row"><span class="search-icon">⌕</span><span id="typedCommand"></span><span class="caret"></span><kbd>⌘ K</kbd></div>
+          <div class="suggestions"><div class="suggestion active"><span class="suggestion-icon">✦</span><div><b>Search with intelligence</b><small>Ask, navigate, or command</small></div><span class="enter">↵</span></div><div class="suggestion"><span class="suggestion-icon">↗</span><div><b>open youtube hlo</b><small>youtube.com · search: hlo</small></div></div><div class="suggestion"><span class="suggestion-icon">◌</span><div><b>!gh browser engine</b><small>GitHub · search query</small></div></div></div>
+        </div>
+        <div class="console-footer"><span><i class="green-dot"></i> LOCAL-FIRST</span><span>COMMAND INTELLIGENCE <b>↗</b></span></div>
+      </div>
+      <div class="hero-reference glass-panel">
+        <div class="reference-caption"><span><i class="green-dot"></i> CURRENT EXPERIENCE</span><b>PRODUCT PREVIEW / 01</b></div>
+        <img src="nextengine-reference.png" alt="NextEngine browser new tab interface preview" />
+        <div class="reference-sheen"></div>
+      </div>
+      <div class="hero-float float-left"><span>01</span><b>Navigate<br>differently.</b><i>↗</i></div>
+      <div class="hero-float float-right"><span class="spark">✦</span><b>NEXTENGINE<br>AI</b><small>Beyond the search bar.</small></div>
+      <div class="scroll-cue"><span></span> Scroll to explore</div>
+    </section>
+
+    <section class="split-section dark-section section-reveal" id="intelligence" data-index="02">
+      <div class="section-copy"><p class="eyebrow">02 / COMMAND INTELLIGENCE</p><h2>Speak naturally.<br><em>Go further.</em></h2><p>NextEngine understands what you mean—not just what you type. A single address field becomes a command center for the entire web.</p><button class="text-link" data-open="commands">See how commands work <span>↗</span></button></div>
+      <div class="command-stage glass-panel"><div class="stage-label">COMMAND / DESTINATION / QUERY</div><div class="command-flow"><div class="flow-item"><span class="flow-num">01</span><b>open youtube</b><small>Navigate directly</small></div><span class="flow-arrow">→</span><div class="flow-item accent"><span class="flow-num">02</span><b>youtube.com</b><small>Destination resolved</small></div></div><div class="command-flow"><div class="flow-item"><span class="flow-num">01</span><b>! youtube hlo</b><small>Bang command</small></div><span class="flow-arrow">→</span><div class="flow-item accent"><span class="flow-num">03</span><b>Search: hlo</b><small>Intent understood</small></div></div><div class="stage-bottom"><span>Try a command</span><button class="command-chip" data-command="! gh nextengine">! gh nextengine</button><button class="command-chip" data-command="music">music</button></div></div>
+    </section>
+
+    <section class="feature-section section-reveal" data-index="03"><div class="feature-heading"><p class="eyebrow">03 / YOUR WORKSPACE</p><h2>Everything in its<br><span>right place.</span></h2><p>Keep the signal. Lose the noise. Tabs, bookmarks, tasks, and history work together in a workspace that bends to your flow.</p></div><div class="workspace-window glass-panel"><div class="workspace-sidebar"><div class="side-logo">N<span>E</span></div><div class="side-item active">⌂ <span>Home</span></div><div class="side-item">▤ <span>Bookmarks</span></div><div class="side-item">◷ <span>History</span></div><div class="side-spacer"></div><div class="side-item">⚙ <span>Settings</span></div></div><div class="workspace-main"><div class="workspace-tabs"><span class="tab active">⌁ Work <b>3</b></span><span class="tab">◒ Study <b>4</b></span><span class="tab">✦ Personal <b>2</b></span><button>＋</button></div><div class="workspace-toolbar"><span>WORKSPACE / TODAY</span><span class="toolbar-actions">⌕　⋮</span></div><div class="bookmark-grid"><article class="bookmark-card cyan"><div class="site-symbol">G</div><div><b>Gmail</b><small>mail.google.com</small></div><span>↗</span></article><article class="bookmark-card purple"><div class="site-symbol">◫</div><div><b>Figma</b><small>figma.com</small></div><span>↗</span></article><article class="bookmark-card blue"><div class="site-symbol">GH</div><div><b>GitHub</b><small>github.com</small></div><span>↗</span></article><article class="bookmark-card muted"><div class="site-symbol">N</div><div><b>Notion</b><small>notion.so</small></div><span>↗</span></article></div><div class="workspace-footer"><span><i class="green-dot"></i> 4 tabs in focus</span><span>⌘ 1–3 switch workspaces</span></div></div></div></section>
+
+    <section class="feature-section inverse section-reveal" id="control" data-index="04"><div class="feature-heading"><p class="eyebrow">04 / CONTROL THE EXPERIENCE</p><h2>Less distraction.<br><span>More depth.</span></h2><p>Reader mode clears the edges. Focus mode clears the noise. Content blocking gives every page room to breathe.</p></div><div class="control-grid"><div class="before-after glass-panel"><div class="ba-header"><span>READER MODE</span><button class="toggle active" data-toggle="reader"><i></i></button></div><div class="article-ui cluttered" id="readerPreview"><div class="article-nav">THE DAILY SIGNAL <span>NEWS　 CULTURE　 SCIENCE　 MENU</span></div><div class="article-body"><div class="article-main"><small>FIELD NOTE / 09.14.26</small><h3>The quiet power<br>of a focused mind</h3><p>There is a different way to move through information. One that makes space for the signal and lets the static fall away.</p><div class="article-line"></div></div><div class="article-aside"><span>ADVERTISEMENT</span><div></div><span>RELATED STORIES</span></div></div></div><div class="ba-caption"><b id="readerState">CLUTTERED ARTICLE</b><span>Toggle to transform</span></div></div><div class="privacy-panel glass-panel"><div class="privacy-glow"></div><div class="ba-header"><span>CONTENT BLOCKING</span><span class="shield">◈</span></div><h3>A cleaner<br><em>connection.</em></h3><div class="privacy-stats"><div><b id="blockedCount">1,284</b><span>requests blocked</span></div><div><b>38%</b><span>less noise</span></div></div><div class="privacy-bar"><span></span></div><p>Third-party content stays out of the way—so the page can do its job.</p></div></div></section>
+
+
+    <section class="feature-lab section-reveal" data-index="04A">
+      <div class="lab-heading"><p class="eyebrow">04A / BROWSER SYSTEMS</p><h2>Tools that move<br><span>with you.</span></h2><p>Small controls. Big leverage. Every feature is designed to disappear into your flow until you need it.</p></div>
+      <div class="feature-blocks">
+        <article class="feature-block tabs-block glass-panel">
+          <div class="block-head"><span class="block-index">01</span><div><p class="block-kicker">TAB INTELLIGENCE</p><h3>Stay in motion.</h3></div><span class="block-icon">⌘</span></div>
+          <div class="tab-demo"><div class="tab-strip"><button class="demo-tab active">◉ Product brief <i></i></button><button class="demo-tab">◌ Research notes <i></i></button><button class="demo-tab">◌ Design system <i></i></button><button class="new-tab">+</button></div><div class="tab-page"><span class="page-orb">N</span><small>ACTIVE WORKSPACE</small><b>Three tabs.<br>One clear context.</b><div class="page-lines"><i></i><i></i><i></i></div></div></div><div class="block-foot"><span>FOREGROUND / BACKGROUND</span><b>Tab divider <button class="mini-switch active"><i></i></button></b></div>
+          <div class="tabs-reference"><img src="tabs-reference.png" alt="NextEngine browser actions and dark mode reference" /><div class="tabs-reference-copy"><p class="block-kicker">TABS</p><h4>Simple controls. Clear flow.</h4><p>• Press <strong>+</strong> to create a new tab.<br>Hover over a tab and click the <strong>x</strong> button to delete it.</p></div></div>
+        </article>
+        <article class="feature-block bang-block glass-panel">
+          <div class="block-head"><span class="block-index">02</span><div><p class="block-kicker">CUSTOM BANGS</p><h3>Your shortcuts.</h3></div><span class="block-icon">!</span></div>
+          <div class="bang-list"><button class="bang-row active" data-bang="yt"><code>!yt</code><span>youtube.com/search?q=%s</span><b>↗</b></button><button class="bang-row" data-bang="gh"><code>!gh</code><span>github.com/search?q=%s</span><b>↗</b></button><button class="bang-row" data-bang="mdn"><code>!mdn</code><span>developer.mozilla.org/search?q=%s</span><b>↗</b></button><div class="bang-add">＋ Add Custom Bang</div></div><div class="bang-result"><span>TRY IT</span><b id="bangResult">!yt cats</b><i>→ YouTube search</i></div>
+        </article>
+        <article class="feature-block downloads-block glass-panel">
+          <div class="block-head"><span class="block-index">03</span><div><p class="block-kicker">DOWNLOADS</p><h3>Everything within reach.</h3></div><span class="block-icon">↓</span></div>
+          <div class="download-card"><div class="file-icon">ZIP</div><div class="file-meta"><b>nextengine-assets.zip</b><small>48.2 MB · Downloading</small><div class="download-track"><i></i></div></div><strong id="downloadPercent">72%</strong></div><div class="download-card complete"><div class="file-icon">PDF</div><div class="file-meta"><b>research-notes.pdf</b><small>12.8 MB · Complete</small><div class="download-track"><i></i></div></div><strong>✓</strong></div><div class="download-actions"><button id="downloadPulse">Open Downloads</button><span>Show in folder　↗</span></div>
+        </article>
+        <article class="feature-block focus-block glass-panel">
+          <div class="block-head"><span class="block-index">04</span><div><p class="block-kicker">FOCUS MODE</p><h3>One task. Zero noise.</h3></div><button class="focus-toggle" id="focusToggle"><i></i></button></div>
+          <div class="focus-stage" id="focusStage"><div class="focus-tabs"><span>Work / 04</span><span>Research / 12</span><span>Social / 08</span></div><div class="focus-center"><div class="focus-ring">✦</div><b id="focusState">FOCUS READY</b><small>Hide distractions and stay with the work.</small></div></div><div class="focus-steps"><span>ONE TASK</span><i></i><span>ONE CONTEXT</span><i></i><span>ZERO DISTRACTION</span></div>
+        </article>
+        <article class="feature-block security-block glass-panel">
+          <div class="block-head"><span class="block-index">05</span><div><p class="block-kicker">PASSWORD AUTO-FILL</p><h3>Secure by default.</h3></div><span class="block-icon">◈</span></div>
+          <div class="secure-card"><div class="secure-top"><span>nextengine / vault</span><span class="lock">⌑ ENCRYPTED</span></div><div class="secure-field"><span>EMAIL</span><b>alex@nextengine.dev</b></div><div class="secure-field"><span>PASSWORD</span><b>••••••••••••</b><button id="revealPassword">VIEW</button></div><div class="secure-badges"><span>AUTOFILL</span><span>PRIVATE</span><span>LOCAL</span></div></div>
+        </article>
+        <article class="feature-block network-block glass-panel">
+          <div class="block-head"><span class="block-index">06</span><div><p class="block-kicker">NETWORK CONTROL</p><h3>Your route. Your rules.</h3></div><span class="block-icon">⌁</span></div>
+          <div class="network-map"><div class="network-node start">NEXTENGINE</div><div class="network-line"><i></i></div><div class="network-node middle">PROXY <b id="proxyMode">NO PROXY</b></div><div class="network-line"><i></i></div><div class="network-node end">DESTINATION</div></div><div class="network-controls"><button class="proxy-choice active" data-proxy="NO PROXY">No Proxy</button><button class="proxy-choice" data-proxy="MANUAL">Manual</button><button class="proxy-choice" data-proxy="AUTOMATIC">Automatic</button></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="utility-section section-reveal">
+      <div class="utility-copy"><p class="eyebrow">04B / POWER USER LAYER</p><h2>Make the browser<br><span>yours.</span></h2><p>Shortcuts for speed. Userscripts for control. Autoplay and language settings exactly where you expect them.</p></div>
+      <div class="utility-grid">
+        <div class="shortcut-board glass-panel"><div class="utility-title"><span>KEYBOARD SHORTCUTS</span><b>⌘ / CTRL</b></div><div class="shortcut-main"><div class="keycap">⌘</div><div class="key-plus">+</div><div class="keycap">K</div><div class="shortcut-label">COMMAND<br><span>Search / Navigate / Ask</span></div></div><div class="shortcut-list"><span>⌘ T <i>New tab</i></span><span>⌘ ⇧ B <i>Bookmarks</i></span><span>⌘ ⇧ F <i>Focus mode</i></span></div></div>
+        <div class="script-board glass-panel"><div class="utility-title"><span>USERSCRIPTS</span><b>ADVANCED</b></div><div class="code-lines"><span><i>01</i> // custom browser behavior</span><span><i>02</i> <em>userscript</em> <b>→</b> modify website</span><span><i>03</i> <em>enhance</em> workflow</span><span><i>04</i> <em>automate</em> UI</span><span><i>05</i> <strong>run when needed</strong></span></div><div class="script-status"><i></i> Sandboxed / Ready to customize</div></div>
+      </div>
+    </section>
+
+    <section class="theme-section section-reveal" data-index="05"><div class="theme-copy"><p class="eyebrow">05 / MAKE IT YOURS</p><h2>Designed around<br><em>your rhythm.</em></h2><p>Dark, light, night, or system. Configure the browser you want to spend time in.</p><div class="theme-buttons"><button class="theme-btn active" data-theme="dark">DARK</button><button class="theme-btn" data-theme="light">LIGHT</button><button class="theme-btn" data-theme="night">NIGHT</button></div></div><div class="theme-demo" id="themeDemo"><div class="demo-top"><span class="mini-brand">N</span><span class="mini-url">nextengine://new-tab</span><span>◐　⌁　⋮</span></div><div class="demo-center"><span class="mini-mark">N</span><h3>Welcome back.</h3><p>What will you discover?</p><div class="mini-search">⌕　Search or enter a command <kbd>⌘ K</kbd></div></div><div class="demo-footer"><span>○ Privacy protected</span><span>◒ 3 workspaces</span></div></div></section>
+
+    <section class="ai-section section-reveal" id="ai" data-index="06"><div class="ai-backdrop"></div><div class="ai-intro"><p class="eyebrow"><span class="pulse-dot"></span> 06 / NEXTENGINE AI</p><h2>Go beyond<br><span>the search bar.</span></h2><p>From searching to understanding. From understanding to action.</p><button class="ai-button" id="askAi">Ask NextEngine AI <span>↗</span></button></div><div class="ai-panel glass-panel"><div class="ai-panel-top"><span><i class="spark">✦</i> NEXTENGINE AI</span><span>CONTEXT LAYER / READY</span></div><div class="ai-prompt"><span class="prompt-avatar">U</span><div><small>YOU ASKED</small><b>Summarize the signal behind this page</b></div></div><div class="ai-response" id="aiResponse"><span class="ai-avatar">✦</span><div><small>NEXTENGINE AI</small><p>I'll connect the context, remove the noise, and surface the ideas that matter.</p><div class="response-tags"><span>UNDERSTANDING</span><span>CONTEXT</span><span>ACTION</span></div></div></div><div class="ai-panel-bottom"><span><i class="green-dot"></i> Ready when you are</span><span>⌘ ↵ to ask</span></div></div></section>
+
+    <section class="final-section section-reveal"><div class="final-orbit"></div><p class="eyebrow">THE NEXT CHAPTER STARTS HERE</p><h2>WELCOME TO THE<br><span>NEXT ENGINE.</span></h2><p>The web, reengineered around the way you think.</p><div class="final-actions"><button class="hero-action" data-scroll="#top">Start browsing <span>↗</span></button><button class="text-link" data-scroll="#ai">Explore NextEngine AI <span>↗</span></button></div><div class="footer-mark">N<span>EXTENGINE</span><small>BUILT FOR THE WAY FORWARD.</small></div></section>
+  </main>
+
+  <div class="modal" id="modal" aria-hidden="true"><div class="modal-card glass-panel"><button class="modal-close" id="modalClose">×</button><p class="eyebrow">COMMAND INTELLIGENCE</p><h3>One field.<br><span>Infinite direction.</span></h3><p>Use natural commands to navigate, search, and shape your workflow. NextEngine turns intent into motion.</p><div class="modal-example"><code>! gh future of browsers</code><span>→</span><b>GitHub search</b></div></div></div>
+  <script src="script.js"></script>
+</body>
+</html>

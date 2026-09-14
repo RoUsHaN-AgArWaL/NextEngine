@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextEngine | Future Browser</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- <link rel="stylesheet" href="dist/bundle.css" /> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #a855f7, #3b82f6);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #fff;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* --- Background Animation --- */
+        #bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: background 0.8s ease;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .default-bg {
+            background: radial-gradient(circle at 50% 50%, #1e1b4b, #000);
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Intro Overlay --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            pointer-events: none;
+        }
+
+        #intro-bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: -2;
+            transition: opacity 1s ease;
+        }
+
+        .intro-text-container {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            display: flex;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .intro-char {
+            opacity: 0;
+            transform: translateY(20px);
+            display: inline-block;
+        }
+
+        .word-engine {
+            background: linear-gradient(
+                to right,
+                #a855f7 0%,
+                #3b82f6 50%,
+                #a855f7 100%
+            );
+            background-size: 200% auto;
+            color: #fff;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 3s linear infinite;
+            text-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+        }
+
+        .intro-line {
+            width: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            margin-top: 1rem;
+            box-shadow: 0 0 15px var(--neon-purple);
+            border-radius: 2px;
+        }
+
+        /* --- Glassmorphism Utils --- */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-style: preserve-3d;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+            50% { text-shadow: 0 0 25px rgba(255,255,255,0.6), 0 0 50px var(--neon-blue); }
+        }
+
+        @keyframes textShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        .glitch-effect {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: var(--neon-blue);
+        }
+
+        .shine-text {
+            background: linear-gradient(
+                to right,
+                #a855f7 20%,
+                #fff 50%,
+                #3b82f6 80%
+            );
+            background-size: 200% auto;
+            color: #000;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 3s linear infinite;
+        }
+
+        /* --- UI Elements --- */
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .dock-item {
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .dock-item:hover {
+            transform: translateY(-10px) scale(1.2);
+        }
+
+        /* Modal Transitions */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 300ms, transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 300ms, transform 300ms;
+        }
+
+        /* Greeting Text */
+        .greeting-text {
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* 3D Tilt Wrapper */
+        .tilt-wrapper {
+            perspective: 1000px;
+        }
+
+        /* --- Settings Popup --- */
+        .settings-popup {
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 243, 255, 0.1);
+            border-radius: 24px;
+            transform-origin: bottom center;
+        }
+
+        .settings-item {
+            transition: all 0.2s ease;
+        }
+
+        .settings-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            width: 52px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .toggle-switch.active {
+            background: linear-gradient(135deg, #00f3ff, #3b82f6);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-switch.active::after {
+            left: 27px;
+        }
+
+        /* Theme Buttons */
+        .theme-btn {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid transparent;
+        }
+
+        .theme-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .theme-btn.active {
+            border-color: #00f3ff;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        }
+
+        /* Dropdown */
+        .custom-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .custom-select:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 243, 255, 0.3);
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: #00f3ff;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+        }
+
+        /* CTA Button */
+        .cta-button {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(59, 130, 246, 0.2));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(59, 130, 246, 0.3));
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+        }
+
+        /* Light Theme */
+        body.light-theme {
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        body.light-theme .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-theme .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-theme .search-input {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: #1e293b;
+        }
+
+        body.light-theme .greeting-text {
+            background: linear-gradient(to right, #1e293b, #475569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Popup Animation */
+        @keyframes popupIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.85) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes popupOut {
+            0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.85) translateY(20px);
+            }
+        }
+
+        .popup-animate-in {
+            animation: popupIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .popup-animate-out {
+            animation: popupOut 0.3s cubic-bezier(0.34, 0.615, 0.4, 0.985) forwards;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Intro Background Layer -->
+    <div id="intro-bg-layer"></div>
+
+    <!-- Background -->
+    <div id="bg-container" class="default-bg opacity-0 transition-opacity duration-1000"></div>
+    <canvas id="bg-canvas" class="absolute inset-0 z-0 opacity-40 pointer-events-none"></canvas>
+
+    <!-- Intro Overlay -->
+    <div id="intro-overlay" class="hidden">
+        <div class="intro-text-container" id="intro-text">
+            <!-- Letters injected via JS -->
+        </div>
+        <div class="intro-line" id="intro-line"></div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="relative z-10 h-full flex flex-col justify-between p-6 opacity-0 transition-opacity duration-1000">
+        
+        <!-- Header -->
+        <header class="flex justify-between items-center h-16">
+            <div class="flex items-center gap-3">
+                <div class="font-['Orbitron'] text-2xl font-bold tracking-wider">
+                    <span class="text-white">Next</span><span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Engine</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div id="weather-widget" class="hidden md:flex items-center gap-2 glass-panel px-4 py-2 rounded-full text-sm font-medium text-gray-200">
+                    <i class="fas fa-cloud text-blue-300"></i>
+                    <span>24°C Tokyo</span>
+                </div>
+                <div id="profile-pill" class="cursor-pointer glass-panel p-1 pr-4 rounded-full flex items-center gap-3 hover:bg-white/10 transition">
+                    <div class="w-8 h-8 rounded-full overflow-hidden border border-white/20 relative">
+                        <img id="header-avatar" src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                    <span id="header-name" class="text-sm font-medium">Guest</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Center Content -->
+        <main class="flex-1 flex flex-col justify-center items-center w-full max-w-4xl mx-auto tilt-wrapper">
+            
+            <!-- NextEngine Brand Above Greeting -->
+            <div class="text-center mb-4 transform transition-all duration-700">
+                <div class="font-['Orbitron'] text-xl font-medium tracking-[0.3em] text-white/40 uppercase">
+                    NextEngine
+                </div>
+            </div>
+
+            <!-- Greeting -->
+            <div class="text-center mb-8 transform transition-all duration-700" id="greeting-container">
+                <h1 id="greeting" class="text-5xl md:text-6xl font-light mb-2 greeting-text font-['Orbitron']">Good Evening</h1>
+                <p id="date-display" class="text-blue-200/60 font-mono tracking-widest text-sm uppercase">Loading Date...</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="w-full max-w-2xl relative mb-12 group">
+                <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400 group-focus-within:text-blue-400 transition-colors"></i>
+                </div>
+                <input type="text" id="search-input" 
+                    class="search-input w-full pl-14 pr-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-gray-400 text-lg backdrop-blur-md transition-all duration-300"
+                    placeholder="Search the universe..." autocomplete="off">
+                <div class="absolute right-4 top-1/2 -translate-y-1/2 flex gap-2">
+                    <span class="text-xs text-gray-500 bg-white/5 px-2 py-1 rounded border border-white/5">CMD+K</span>
+                </div>
+            </div>
+
+            <!-- Quick Access Grid -->
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 w-full" id="quick-links">
+                <!-- Links injected via JS -->
+            </div>
+        </main>
+
+        <!-- Bottom Dock -->
+        <footer class="flex justify-center mb-4">
+            <div class="glass-panel px-6 py-3 rounded-2xl flex items-center gap-6">
+                <button class="dock-item p-3 rounded-xl hover:bg-white/10 text-gray-300 hover:text-white" title="Wallpaper" onclick="toggleWallpaperModal()">
+                    <i class="fas fa-image text-xl"></i>
+                </button>
+                <button class="dock-item p-3 rounded-xl hover:bg-white/10 text-gray-300 hover:text-white" title="Profile" onclick="toggleProfileModal()">
+                    <i class="fas fa-user text-xl"></i>
+                </button>
+                <div class="w-px h-8 bg-white/10"></div>
+                <button class="dock-item p-3 rounded-xl hover:bg-white/10 text-gray-300 hover:text-white" title="Settings" onclick="toggleSettingsPopup()">
+                    <i class="fas fa-cog text-xl"></i>
+                </button>
+                <button class="dock-item p-3 rounded-xl hover:bg-white/10 text-gray-300 hover:text-red-400" title="Logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt text-xl"></i>
+                </button>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Settings Popup -->
+    <div id="settings-popup-overlay" class="fixed inset-0 z-50 hidden" onclick="closeSettingsPopup(event)">
+        <div class="absolute bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md px-4">
+            <div id="settings-popup" class="settings-popup p-6 opacity-0">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-['Orbitron'] font-bold text-white">Quick Settings</h2>
+                    <button onclick="closeSettingsPopup()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
+                        <i class="fas fa-times text-gray-400"></i>
+                    </button>
+                </div>
+
+                <!-- Settings Items -->
+                <div class="space-y-1">
+                    <!-- Display Language -->
+                    <div class="settings-item p-3 rounded-xl">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
+                                    <i class="fas fa-globe text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-white">Display Language</div>
+                                    <div class="text-xs text-gray-400">Choose your preferred language</div>
+                                </div>
+                            </div>
+                            <select id="language-select" class="custom-select px-3 py-2 text-sm text-white cursor-pointer" onchange="saveSettings()">
+                                <option value="en">English (India)</option>
+                                <option value="en-us">English (US)</option>
+                                <option value="es">Español</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                                <option value="ja">日本語</option>
+                                <option value="zh">中文</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Region -->
+                    <div class="settings-item p-3 rounded-xl">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-teal-500/20 flex items-center justify-center">
+                                    <i class="fas fa-map-marker-alt text-green-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-white">Region</div>
+                                    <div class="text-xs text-gray-400">Set your location</div>
+                                </div>
+                            </div>
+                            <select id="region-select" class="custom-select px-3 py-2 text-sm text-white cursor-pointer" onchange="saveSettings()">
+                                <option value="in">India</option>
+                                <option value="us">United States</option>
+                                <option value="uk">United Kingdom</option>
+                                <option value="ca">Canada</option>
+                                <option value="au">Australia</option>
+                                <option value="jp">Japan</option>
+                                <option value="de">Germany</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Theme Selector -->
+                    <div class="settings-item p-3 rounded-xl">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20 flex items-center justify-center">
+                                <i class="fas fa-palette text-yellow-400"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-white">Theme</div>
+                                <div class="text-xs text-gray-400">Choose your visual style</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 ml-13">
+                            <button id="theme-light" class="theme-btn flex-1 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center gap-2 text-sm text-white" onclick="setTheme('light')">
+                                <i class="fas fa-sun text-yellow-400"></i>
+                                <span>Light</span>
+                            </button>
+                            <button id="theme-dark" class="theme-btn flex-1 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center gap-2 text-sm text-white active" onclick="setTheme('dark')">
+                                <i class="fas fa-moon text-blue-400"></i>
+                                <span>Dark</span>
+                            </button>
+                            <button id="theme-system" class="theme-btn flex-1 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center gap-2 text-sm text-white" onclick="setTheme('system')">
+                                <i class="fas fa-desktop text-gray-400"></i>
+                                <span>System</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Safe Search -->
+                    <div class="settings-item p-3 rounded-xl">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-white">Safe Search</div>
+                                    <div class="text-xs text-gray-400">Filter explicit content</div>
+                                </div>
+                            </div>
+                            <select id="safesearch-select" class="custom-select px-3 py-2 text-sm text-white cursor-pointer" onchange="saveSettings()">
+                                <option value="moderate">Moderate</option>
+                                <option value="strict">Strict</option>
+                                <option value="off">Off</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Answer with AI -->
+                    <div class="settings-item p-3 rounded-xl">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
+                                    <i class="fas fa-robot text-cyan-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-white">Answer with AI</div>
+                                    <div class="text-xs text-gray-400">Get AI-powered responses</div>
+                                </div>
+                            </div>
+                            <div id="ai-toggle" class="toggle-switch" onclick="toggleSetting('ai')"></div>
+                        </div>
+                    </div>
+
+                    <!-- Ad-Free Search Results -->
+                    <div class="settings-item p-3 rounded-xl">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 flex items-center justify-center relative">
+                                    <i class="fas fa-crown text-amber-400"></i>
+                                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-star text-[8px] text-black"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-white">Ad-Free Search</div>
+                                    <div class="text-xs text-gray-400">Premium feature</div>
+                                </div>
+                            </div>
+                            <div id="adfree-toggle" class="toggle-switch" onclick="toggleSetting('adfree')"></div>
+                        </div>
+                    </div>
+
+                    <!-- Share Feedback -->
+                    <div class="settings-item p-3 rounded-xl cursor-pointer" onclick="showFeedback()">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center">
+                                <i class="fas fa-comment-dots text-pink-400"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-white">Share Feedback</div>
+                                <div class="text-xs text-gray-400">Help us improve</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- All Settings Button -->
+                <button class="cta-button w-full mt-6 py-3 px-4 rounded-xl text-white font-medium flex items-center justify-center gap-2" onclick="showAllSettings()">
+                    <span>All Settings</span>
+                    <i class="fas fa-arrow-right text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Setup/Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden transition-all duration-300">
+        <div class="glass-panel w-full max-w-md p-8 rounded-3xl transform scale-95 opacity-0 transition-all duration-300" id="profile-modal-content">
+            <h2 class="text-3xl font-['Orbitron'] font-bold mb-2 text-center">Welcome</h2>
+            <p class="text-center text-gray-400 mb-8">Let's personalize your experience.</p>
+            
+            <div class="flex flex-col items-center mb-8">
+                <div class="w-24 h-24 rounded-full bg-white/10 border-2 border-dashed border-white/30 flex items-center justify-center mb-4 cursor-pointer overflow-hidden hover:border-blue-400 transition group relative">
+                    <img id="avatar-preview" src="" class="w-full h-full object-cover hidden">
+                    <i class="fas fa-camera text-2xl text-gray-400 group-hover:text-white transition" id="avatar-icon"></i>
+                    <input type="file" id="avatar-upload" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+                </div>
+                <span class="text-xs text-gray-500">Click to upload avatar</span>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1 ml-1">Your Name</label>
+                    <input type="text" id="username-input" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <button id="save-profile-btn" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-3 rounded-xl shadow-lg shadow-purple-900/20 transition transform hover:scale-[1.02]">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallpaper Modal -->
+    <div id="wallpaper-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+        <div class="glass-panel w-full max-w-2xl p-8 rounded-3xl transform scale-95 opacity-0 transition-all duration-300" id="wallpaper-modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-['Orbitron'] font-bold">Customize Appearance</h2>
+                <button onclick="toggleWallpaperModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">Presets</h3>
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="aspect-video rounded-lg cursor-pointer border-2 border-transparent hover:border-blue-500 transition overflow-hidden bg-gradient-to-br from-gray-900 to-black" onclick="setWallpaper('default')"></div>
+                        <div class="aspect-video rounded-lg cursor-pointer border-2 border-transparent hover:border-blue-500 transition overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900" onclick="setWallpaper('purple')"></div>
+                        <div class="aspect-video rounded-lg cursor-pointer border-2 border-transparent hover:border-blue-500 transition overflow-hidden bg-gradient-to-br from-blue-900 to-cyan-900" onclick="setWallpaper('blue')"></div>
+                        <div class="aspect-video rounded-lg cursor-pointer border-2 border-transparent hover:border-blue-500 transition overflow-hidden bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover" onclick="setWallpaper('url', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">Custom</h3>
+                    <label class="flex items-center justify-center w-full h-24 border-2 border-dashed border-white/20 rounded-xl cursor-pointer hover:bg-white/5 transition">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
+                            <span class="text-sm text-gray-400">Upload Image</span>
+                        </div>
+                        <input type="file" class="hidden" id="wallpaper-upload" accept="image/*">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- State Management ---
+        const defaultLinks = [
+            { name: 'YouTube', url: 'https://youtube.com', icon: 'fab fa-youtube', color: 'text-red-500' },
+            { name: 'Netflix', url: 'https://netflix.com', icon: 'fas fa-play', color: 'text-red-600' },
+            { name: 'Reddit', url: 'https://reddit.com', icon: 'fab fa-reddit', color: 'text-orange-500' },
+            { name: 'X', url: 'https://twitter.com', icon: 'fab fa-x-twitter', color: 'text-white' },
+            { name: 'Twitch', url: 'https://twitch.tv', icon: 'fab fa-twitch', color: 'text-purple-500' },
+            { name: 'GitHub', url: 'https://github.com', icon: 'fab fa-github', color: 'text-white' }
+        ];
+
+        const state = {
+            introPlayed: localStorage.getItem('nextEngine_introPlayed') === 'true',
+            user: JSON.parse(localStorage.getItem('nextEngine_user')) || null,
+            wallpaper: localStorage.getItem('nextEngine_wallpaper') || 'default',
+            links: JSON.parse(localStorage.getItem('nextEngine_links')) || defaultLinks,
+            settings: JSON.parse(localStorage.getItem('nextEngine_settings')) || {
+                language: 'en',
+                region: 'in',
+                theme: 'dark',
+                safeSearch: 'moderate',
+                aiEnabled: false,
+                adFree: false
+            }
+        };
+
+        // --- DOM Elements ---
+        const elements = {
+            app: document.getElementById('app'),
+            introOverlay: document.getElementById('intro-overlay'),
+            introText: document.getElementById('intro-text'),
+            introLine: document.getElementById('intro-line'),
+            bgContainer: document.getElementById('bg-container'),
+            searchInput: document.getElementById('search-input'),
+            greeting: document.getElementById('greeting'),
+            dateDisplay: document.getElementById('date-display'),
+            quickLinks: document.getElementById('quick-links'),
+            profileModal: document.getElementById('profile-modal'),
+            profileModalContent: document.getElementById('profile-modal-content'),
+            wallpaperModal: document.getElementById('wallpaper-modal'),
+            wallpaperModalContent: document.getElementById('wallpaper-modal-content'),
+            avatarUpload: document.getElementById('avatar-upload'),
+            avatarPreview: document.getElementById('avatar-preview'),
+            avatarIcon: document.getElementById('avatar-icon'),
+            saveProfileBtn: document.getElementById('save-profile-btn'),
+            usernameInput: document.getElementById('username-input'),
+            headerName: document.getElementById('header-name'),
+            headerAvatar: document.getElementById('header-avatar'),
+            profilePill: document.getElementById('profile-pill'),
+            wallpaperUpload: document.getElementById('wallpaper-upload'),
+            settingsPopupOverlay: document.getElementById('settings-popup-overlay'),
+            settingsPopup: document.getElementById('settings-popup'),
+            languageSelect: document.getElementById('language-select'),
+            regionSelect: document.getElementById('region-select'),
+            safeSearchSelect: document.getElementById('safesearch-select'),
+            aiToggle: document.getElementById('ai-toggle'),
+            adFreeToggle: document.getElementById('adfree-toggle')
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            applyWallpaper(state.wallpaper);
+            renderQuickLinks();
+            updateTime();
+            setInterval(updateTime, 60000);
+            setupEventListeners();
+            loadSettings();
+
+            if (!state.introPlayed) {
+                playIntro();
+            } else {
+                elements.app.style.opacity = '1';
+                elements.bgContainer.classList.remove('opacity-0');
+                document.getElementById('intro-bg-layer').style.display = 'none';
+                checkProfile();
+            }
+        });
+
+        // --- Intro Sequence ---
+        function playIntro() {
+            elements.introOverlay.classList.remove('hidden');
+            const text = "NextEngine";
+            
+            elements.introText.innerHTML = '';
+            [...text].forEach((char, index) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.className = 'intro-char';
+                if (index >= 4) span.classList.add('word-engine');
+                elements.introText.appendChild(span);
+            });
+
+            const chars = document.querySelectorAll('.intro-char');
+            chars.forEach((char, i) => {
+                setTimeout(() => {
+                    char.style.animation = 'slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, pulseGlow 2s infinite';
+                    if (Math.random() > 0.7) {
+                        setTimeout(() => {
+                            char.classList.add('glitch-effect');
+                            setTimeout(() => char.classList.remove('glitch-effect'), 300);
+                        }, 800 + Math.random() * 500);
+                    }
+                }, i * 150);
+            });
+
+            setTimeout(() => {
+                elements.introLine.style.transition = 'width 1s ease-out';
+                elements.introLine.style.width = '100%';
+            }, 1500);
+
+            setTimeout(() => {
+                elements.introOverlay.style.transition = 'opacity 1s ease';
+                elements.introOverlay.style.opacity = '0';
+                elements.bgContainer.classList.remove('opacity-0');
+                
+                setTimeout(() => {
+                    elements.introOverlay.classList.add('hidden');
+                    document.getElementById('intro-bg-layer').style.display = 'none';
+                    elements.app.style.opacity = '1';
+                    
+                    state.introPlayed = true;
+                    localStorage.setItem('nextEngine_introPlayed', 'true');
+                    checkProfile();
+                }, 1000);
+            }, 4000);
+        }
+
+        // --- Profile System ---
+        function checkProfile() {
+            if (!state.user) {
+                setTimeout(() => {
+                    openProfileModal();
+                }, 500);
+            } else {
+                updateProfileUI();
+            }
+        }
+
+        function openProfileModal() {
+            elements.profileModal.classList.remove('hidden');
+            void elements.profileModal.offsetWidth;
+            elements.profileModalContent.classList.remove('opacity-0', 'scale-95');
+            elements.profileModalContent.classList.add('opacity-100', 'scale-100');
+        }
+
+        function closeProfileModal() {
+            elements.profileModalContent.classList.remove('opacity-100', 'scale-100');
+            elements.profileModalContent.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                elements.profileModal.classList.add('hidden');
+            }, 300);
+        }
+
+        function saveProfile() {
+            const name = elements.usernameInput.value.trim() || 'User';
+            const avatarSrc = elements.avatarPreview.src || `https://ui-avatars.com/api/?name=${name}&background=0D8ABC&color=fff`;
+            
+            state.user = { name, avatar: avatarSrc };
+            localStorage.setItem('nextEngine_user', JSON.stringify(state.user));
+            
+            updateProfileUI();
+            closeProfileModal();
+        }
+
+        function updateProfileUI() {
+            if (state.user) {
+                elements.headerName.textContent = state.user.name;
+                elements.headerAvatar.src = state.user.avatar;
+                
+                const hour = new Date().getHours();
+                let greet = 'Good Evening';
+                if (hour < 12) greet = 'Good Morning';
+                else if (hour < 18) greet = 'Good Afternoon';
+                
+                elements.greeting.textContent = `${greet}, ${state.user.name}`;
+            }
+        }
+
+        function toggleProfileModal() {
+            if (elements.profileModal.classList.contains('hidden')) {
+                if (state.user) {
+                    elements.usernameInput.value = state.user.name;
+                    elements.avatarPreview.src = state.user.avatar;
+                    elements.avatarPreview.classList.remove('hidden');
+                    elements.avatarIcon.classList.add('hidden');
+                }
+                openProfileModal();
+            } else {
+                closeProfileModal();
+            }
+        }
+
+        // --- Logout ---
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                state.user = null;
+                localStorage.removeItem('nextEngine_user');
+                elements.headerName.textContent = 'Guest';
+                elements.headerAvatar.src = 'https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff';
+                elements.greeting.textContent = 'Good Evening';
+                
+                elements.usernameInput.value = '';
+                elements.avatarPreview.src = '';
+                elements.avatarPreview.classList.add('hidden');
+                elements.avatarIcon.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    openProfileModal();
+                }, 300);
+            }
+        }
+
+        // --- Settings Popup ---
+        function toggleSettingsPopup() {
+            if (elements.settingsPopupOverlay.classList.contains('hidden')) {
+                openSettingsPopup();
+            } else {
+                closeSettingsPopup();
+            }
+        }
+
+        function openSettingsPopup() {
+            elements.settingsPopupOverlay.classList.remove('hidden');
+            elements.settingsPopup.classList.remove('popup-animate-out');
+            elements.settingsPopup.classList.add('popup-animate-in');
+        }
+
+        function closeSettingsPopup(event) {
+            if (event && event.target !== elements.settingsPopupOverlay && event.target !== event.currentTarget) {
+                return;
+            }
+            elements.settingsPopup.classList.remove('popup-animate-in');
+            elements.settingsPopup.classList.add('popup-animate-out');
+            setTimeout(() => {
+                elements.settingsPopupOverlay.classList.add('hidden');
+            }, 300);
+        }
+
+        function loadSettings() {
+            elements.languageSelect.value = state.settings.language;
+            elements.regionSelect.value = state.settings.region;
+            elements.safeSearchSelect.value = state.settings.safeSearch;
+            
+            if (state.settings.aiEnabled) {
+                elements.aiToggle.classList.add('active');
+            }
+            if (state.settings.adFree) {
+                elements.adFreeToggle.classList.add('active');
+            }
+            
+            setTheme(state.settings.theme, false);
+        }
+
+        function saveSettings() {
+            state.settings.language = elements.languageSelect.value;
+            state.settings.region = elements.regionSelect.value;
+            state.settings.safeSearch = elements.safeSearchSelect.value;
+            localStorage.setItem('nextEngine_settings', JSON.stringify(state.settings));
+        }
+
+        function toggleSetting(setting) {
+            if (setting === 'ai') {
+                state.settings.aiEnabled = !state.settings.aiEnabled;
+                elements.aiToggle.classList.toggle('active');
+            } else if (setting === 'adfree') {
+                state.settings.adFree = !state.settings.adFree;
+                elements.adFreeToggle.classList.toggle('active');
+            }
+            localStorage.setItem('nextEngine_settings', JSON.stringify(state.settings));
+        }
+
+        function setTheme(theme, save = true) {
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`theme-${theme}`).classList.add('active');
+            
+            if (theme === 'light') {
+                document.body.classList.add('light-theme');
+            } else if (theme === 'dark') {
+                document.body.classList.remove('light-theme');
+            } else if (theme === 'system') {
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                    document.body.classList.add('light-theme');
+                } else {
+                    document.body.classList.remove('light-theme');
+                }
+            }
+            
+            if (save) {
+                state.settings.theme = theme;
+                localStorage.setItem('nextEngine_settings', JSON.stringify(state.settings));
+            }
+        }
+
+        function showFeedback() {
+            const feedback = prompt('Please share your feedback:');
+            if (feedback) {
+                alert('Thank you for your feedback!');
+            }
+        }
+
+        function showAllSettings() {
+            alert('Full settings page coming soon!');
+        }
+
+        // --- Wallpaper System ---
+        function toggleWallpaperModal() {
+            if (elements.wallpaperModal.classList.contains('hidden')) {
+                elements.wallpaperModal.classList.remove('hidden');
+                void elements.wallpaperModal.offsetWidth;
+                elements.wallpaperModalContent.classList.remove('opacity-0', 'scale-95');
+                elements.wallpaperModalContent.classList.add('opacity-100', 'scale-100');
+            } else {
+                elements.wallpaperModalContent.classList.remove('opacity-100', 'scale-100');
+                elements.wallpaperModalContent.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    elements.wallpaperModal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function setWallpaper(type, url) {
+            let bgStyle = '';
+            
+            if (type === 'default') {
+                bgStyle = 'radial-gradient(circle at 50% 50%, #1e1b4b, #000)';
+                state.wallpaper = 'default';
+            } else if (type === 'purple') {
+                bgStyle = 'linear-gradient(135deg, #240b36 0%, #c31432 100%)';
+                state.wallpaper = 'purple';
+            } else if (type === 'blue') {
+                bgStyle = 'linear-gradient(to bottom, #000428, #004e92)';
+                state.wallpaper = 'blue';
+            } else if (type === 'url') {
+                bgStyle = `url('${url}')`;
+                state.wallpaper = `url|${url}`;
+            }
+
+            elements.bgContainer.style.background = bgStyle;
+            if (type === 'url') {
+                elements.bgContainer.style.backgroundSize = 'cover';
+                elements.bgContainer.style.backgroundPosition = 'center';
+            }
+            localStorage.setItem('nextEngine_wallpaper', state.wallpaper);
+        }
+
+        function applyWallpaper(saved) {
+            if (!saved || saved === 'default') return;
+            
+            if (saved.startsWith('url|')) {
+                const url = saved.split('|')[1];
+                setWallpaper('url', url);
+            } else {
+                setWallpaper(saved);
+            }
+        }
+
+        // --- Quick Links & Search ---
+        function renderQuickLinks() {
+            elements.quickLinks.innerHTML = '';
+
+            state.links.forEach((link, index) => {
+                const linkEl = document.createElement('a');
+                linkEl.href = link.url;
+                linkEl.className = 'glass-card flex flex-col items-center justify-center p-4 rounded-2xl h-24 no-underline group relative';
+                linkEl.innerHTML = `
+                    <i class="${link.icon || 'fas fa-globe'} text-2xl mb-2 ${link.color || 'text-blue-400'} transition-transform group-hover:scale-110"></i>
+                    <span class="text-xs text-gray-300 font-medium group-hover:text-white truncate w-full text-center">${link.name}</span>
+                `;
+                
+                linkEl.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    if(confirm(`Remove ${link.name}?`)) {
+                        state.links.splice(index, 1);
+                        saveLinks();
+                        renderQuickLinks();
+                    }
+                });
+
+                elements.quickLinks.appendChild(linkEl);
+            });
+
+            const addBtn = document.createElement('button');
+            addBtn.className = 'glass-card flex flex-col items-center justify-center p-4 rounded-2xl h-24 group hover:bg-white/10 transition cursor-pointer';
+            addBtn.innerHTML = `<i class="fas fa-plus text-xl text-gray-400 group-hover:text-white transition"></i>`;
+            addBtn.onclick = addNewLink;
+            elements.quickLinks.appendChild(addBtn);
+        }
+
+        function addNewLink() {
+            const url = prompt("Enter Website URL (e.g., https://example.com):");
+            if (!url) return;
+            
+            let name = prompt("Enter Name:");
+            if (!name) name = new URL(url).hostname.replace('www.', '');
+
+            state.links.push({
+                name: name,
+                url: url.startsWith('http') ? url : `https://${url}`,
+                icon: 'fas fa-globe',
+                color: 'text-white'
+            });
+            saveLinks();
+            renderQuickLinks();
+        }
+
+        function saveLinks() {
+            localStorage.setItem('nextEngine_links', JSON.stringify(state.links));
+        }
+
+        function performSearch(query) {
+            if (!query) return;
+            window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        }
+
+        // --- Utils ---
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            elements.dateDisplay.textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        // --- Particles ---
+        function initParticles() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2;
+                    this.speedX = Math.random() * 0.5 - 0.25;
+                    this.speedY = Math.random() * 0.5 - 0.25;
+                    this.color = `rgba(${Math.floor(Math.random() * 100 + 155)}, ${Math.floor(Math.random() * 100 + 155)}, 255, ${Math.random() * 0.5})`;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x > canvas.width) this.x = 0;
+                    if (this.x < 0) this.x = canvas.width;
+                    if (this.y > canvas.height) this.y = 0;
+                    if (this.y < 0) this.y = canvas.height;
+                }
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = this.color;
+                }
+            }
+
+            function init() {
+                for (let i = 0; i < 100; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+
+            init();
+            animate();
+        }
+
+        // --- Event Listeners ---
+        function setupEventListeners() {
+            initParticles();
+
+            elements.searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') performSearch(elements.searchInput.value);
+            });
+
+            elements.avatarUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        elements.avatarPreview.src = e.target.result;
+                        elements.avatarPreview.classList.remove('hidden');
+                        elements.avatarIcon.classList.add('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            elements.saveProfileBtn.addEventListener('click', saveProfile);
+            elements.profilePill.addEventListener('click', toggleProfileModal);
+
+            elements.wallpaperUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        setWallpaper('url', e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeSettingsPopup();
+                }
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                const x = (window.innerWidth - e.pageX) / 100;
+                const y = (window.innerHeight - e.pageY) / 100;
+                
+                elements.bgContainer.style.transform = `scale(1.05) translate(${x * 2}px, ${y * 2}px)`;
+                
+                const mainContent = document.querySelector('main');
+                if (mainContent) {
+                    mainContent.style.transform = `translate(${-x}px, ${-y}px)`;
+                }
+            });
+        }
+    </script>
+    <script src="dist/bundle.js"></script>
+</body>
+</html>

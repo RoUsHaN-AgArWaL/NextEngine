@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ]; then
+    update-alternatives --install /usr/bin/x-www-browser \
+        x-www-browser /opt/NextEngine/nextengine 80
+
+    chown root /opt/NextEngine/chrome-sandbox
+    chmod 4755 /opt/NextEngine/chrome-sandbox
+
+    echo "Run sudo xdg-settings set default-web-browser nextengine.desktop && sudo update-alternatives --config x-www-browser to set NextEngine as your default browser."
+
+    ln -sf /opt/NextEngine/nextengine /usr/bin/nextengine
+fi
